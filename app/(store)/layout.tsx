@@ -29,7 +29,8 @@ export default function StoreLayout({ children }: { children: React.ReactNode })
   return (
     <>
       <Toaster
-        position="top-right"
+        position="bottom-center"
+        duration={2000}
         toastOptions={{
           style: {
             background: "#2C2C2C",
@@ -37,6 +38,7 @@ export default function StoreLayout({ children }: { children: React.ReactNode })
             border: "1px solid #3A3A3A",
             borderRadius: "0",
             fontFamily: "var(--font-body)",
+            fontSize: "13px",
           },
         }}
       />

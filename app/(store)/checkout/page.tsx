@@ -88,34 +88,37 @@ export default function CheckoutPage() {
       // Vaciar carrito
       clearCart();
 
-      // Redirigir a success page
-      
-        if (result.wompiCheckoutUrl) {
-          // Cargamos el script de Wompi dinámicamente y usamos el Widget Programático
-          const script = document.createElement("script");
-          script.src = "https://checkout.wompi.co/widget.js";
-          script.onload = () => {
-            const checkout = new (window as any).WidgetCheckout({
-              currency: "COP",
-              amountInCents: result.amountInCents,
-              reference: result.orderNumber,
-              publicKey: process.env.NEXT_PUBLIC_WOMPI_PUBLIC_KEY || "pub_test_7ACX50PPzAW8WBB3ZQwqZRO6wMZaxB6R",
-                signature: { integrity: result.signature }
-              });
-            checkout.open((wompiResult: any) => {
-              // Si el usuario cierra el modal, wompiResult es null o undefined, o transaction status
-              if (wompiResult && wompiResult.transaction) {
-                 window.location.href = `/checkout/wompi-result?id=${wompiResult.transaction.id}`;
-              } else {
-                 setIsSubmitting(false);
-              }
-            });
-          };
-          document.body.appendChild(script);
-        } else {
-
-          router.push(`/checkout/success?order=${result.orderNumber}`);
-        }
+      // Elegir flujo según método de pago elegido por el cliente
+      if (data.paymentMethod === "wompi") {
+        // Cargar el Widget Programático de Wompi
+        const script = document.createElement("script");
+        script.src = "https://checkout.wompi.co/widget.js";
+        script.onerror = () => {
+          toast.error("No se pudo cargar la pasarela de pago. Intenta de nuevo.");
+          setIsSubmitting(false);
+        };
+        script.onload = () => {
+          const checkout = new (window as any).WidgetCheckout({
+            currency: "COP",
+            amountInCents: result.amountInCents,
+            reference: result.orderNumber,
+            publicKey: process.env.NEXT_PUBLIC_WOMPI_PUBLIC_KEY || "pub_test_7ACX50PPzAW8WBB3ZQwqZRO6wMZaxB6R",
+            signature: { integrity: result.signature }
+          });
+          checkout.open((wompiResult: any) => {
+            if (wompiResult && wompiResult.transaction) {
+              window.location.href = `/checkout/wompi-result?id=${wompiResult.transaction.id}`;
+            } else {
+              // El cliente cerró el modal sin pagar
+              setIsSubmitting(false);
+            }
+          });
+        };
+        document.body.appendChild(script);
+      } else {
+        // Flujo WhatsApp: ir a la pantalla de éxito con instrucciones de transferencia
+        router.push(`/checkout/success?order=${result.orderNumber}`);
+      }
 
     } catch (error: any) {
       toast.error(error.message || "Ocurrió un error inesperado.");
