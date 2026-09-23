@@ -1,3 +1,4 @@
+﻿export const dynamic = 'force-dynamic';
 /**
  * API de productos con filtros, búsqueda y paginación.
  * GET /api/products?categoria=botas&talla=42&minPrecio=50000&maxPrecio=300000&stock=true&orden=precio_asc&busqueda=bota&pagina=1
@@ -111,3 +112,4 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Error al obtener productos" }, { status: 500 });
   }
 }
+
