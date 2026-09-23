@@ -19,6 +19,7 @@ const checkoutFormSchema = z.object({
   customerCity: z.string().min(2, "Ingresá tu ciudad"),
   customerAddress: z.string().min(5, "Ingresá la dirección de envío"),
   customerNotes: z.string().optional(),
+  paymentMethod: z.enum(['whatsapp', 'wompi']).default('wompi'),
 });
 
 type CheckoutForm = z.infer<typeof checkoutFormSchema>;
@@ -87,7 +88,11 @@ export default function CheckoutPage() {
       clearCart();
 
       // Redirigir a success page
-      router.push(`/checkout/success?order=${result.orderNumber}`);
+      if (result.wompiCheckoutUrl) {
+          window.location.href = result.wompiCheckoutUrl;
+        } else {
+          router.push(`/checkout/success?order=${result.orderNumber}`);
+        }
 
     } catch (error: any) {
       toast.error(error.message || "Ocurrió un error inesperado.");
@@ -188,6 +193,39 @@ export default function CheckoutPage() {
                     placeholder="Instrucciones especiales de entrega..."
                   />
                 </div>
+              
+                <div className="pt-6 border-t border-border">
+                  <h3 className="font-heading text-md tracking-widest text-foreground uppercase mb-4">Método de Pago</h3>
+                  
+                  <div className="space-y-3">
+                    <label className="flex items-start gap-3 p-4 border border-border bg-background cursor-pointer hover:border-primary transition-colors">
+                      <input 
+                        type="radio" 
+                        value="wompi" 
+                        {...register("paymentMethod")}
+                        className="mt-1"
+                      />
+                      <div>
+                        <p className="text-sm font-heading tracking-widest uppercase text-foreground">Tarjetas / PSE / Bancolombia</p>
+                        <p className="text-xs text-muted-foreground font-body mt-1">Pago 100% seguro procesado por Wompi.</p>
+                      </div>
+                    </label>
+
+                    <label className="flex items-start gap-3 p-4 border border-border bg-background cursor-pointer hover:border-primary transition-colors">
+                      <input 
+                        type="radio" 
+                        value="whatsapp" 
+                        {...register("paymentMethod")}
+                        className="mt-1"
+                      />
+                      <div>
+                        <p className="text-sm font-heading tracking-widest uppercase text-foreground">Transferencia Manual (WhatsApp)</p>
+                        <p className="text-xs text-muted-foreground font-body mt-1">Acuerda el pago por transferencia bancaria directa (Nequi, Daviplata, Bancolombia).</p>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+
               </form>
             </div>
           </div>
@@ -256,7 +294,7 @@ export default function CheckoutPage() {
                 {isSubmitting ? (
                   <><Loader2 className="w-4 h-4 animate-spin" /> Procesando...</>
                 ) : (
-                  "Confirmar y Pagar vía WhatsApp"
+                  watch("paymentMethod") === "wompi" ? "Ir a Pagar Seguro" : "Confirmar y Pagar vía WhatsApp"
                 )}
               </button>
             </div>

@@ -1,4 +1,4 @@
-import { pgTable, text, integer, boolean, timestamp, serial, varchar, decimal, jsonb } from "drizzle-orm/pg-core";
+﻿import { pgTable, text, integer, boolean, timestamp, serial, varchar, decimal, jsonb } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
 // ─── ADMIN USERS ────────────────────────────────────────────────────────────
@@ -85,6 +85,10 @@ export const orders = pgTable("orders", {
   // Estado del ciclo de vida del pedido
   // pendiente_whatsapp → confirmado → enviado → entregado | cancelado
   status: varchar("status", { length: 32 }).notNull().default("pendiente_whatsapp"),
+  // mÃ©todo de pago: whatsapp | mercadopago
+  paymentMethod: varchar("payment_method", { length: 32 }).notNull().default("whatsapp"),
+  // id de la pasarela de pago (ej: payment_id de mercadopago)
+  paymentId: varchar("payment_id", { length: 128 }),
   // Total en COP
   totalAmount: decimal("total_amount", { precision: 12, scale: 2 }).notNull(),
   // Reserva de stock: expira después de X horas si no se confirma
@@ -190,3 +194,4 @@ export type ProductImage = {
   altText: string;
   sortOrder: number;
 };
+

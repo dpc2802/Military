@@ -21,6 +21,8 @@ const checkoutSchema = z.object({
   customerCity: z.string().min(2),
   customerAddress: z.string().min(5),
   customerNotes: z.string().optional(),
+  paymentMethod: z.enum(['whatsapp', 'wompi']).default('whatsapp'),
+  paymentMethod: z.enum(['whatsapp', 'wompi']).default('whatsapp'),
   items: z.array(
     z.object({
       variantId: z.number(),
@@ -44,7 +46,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Datos inválidos" }, { status: 400 });
     }
 
-    const { items, ...customerData } = result.data;
+    const { items, paymentMethod, ...customerData } = result.data;
 
     // 1. Verificar stock actual de todas las variantes
     const variantIds = items.map((i) => i.variantId);
@@ -98,7 +100,10 @@ export async function POST(request: NextRequest) {
       customerCity: customerData.customerCity,
       customerAddress: customerData.customerAddress,
       customerNotes: customerData.customerNotes,
-      status: "pendiente_whatsapp",
+      paymentMethod: paymentMethod,
+      status: paymentMethod === 'wompi' ? 'pendiente_pago' : 'pendiente_whatsapp',
+      status: paymentMethod === 'wompi' ? 'pendiente_pago' : 'pendiente_whatsapp',
+      paymentMethod,
       totalAmount: totalAmount.toString(),
       stockReservationExpiresAt: new Date(Date.now() + STOCK_RESERVATION_HOURS * 60 * 60 * 1000),
     }).returning();
@@ -148,7 +153,19 @@ export async function POST(request: NextRequest) {
       },
     });
 
+    
+    const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+    let wompiCheckoutUrl = undefined;
+    
+    if (paymentMethod === "wompi" && fullOrder) {
+      const amountInCents = Math.round(Number(fullOrder.totalAmount) * 100);
+      const publicKey = process.env.NEXT_PUBLIC_WOMPI_PUBLIC_KEY || "pub_test_missing";
+      const redirectUrl = `${SITE_URL}/checkout/wompi-result`;
+      wompiCheckoutUrl = `https://checkout.wompi.co/p/?public-key=${publicKey}&currency=COP&amount-in-cents=${amountInCents}&reference=${fullOrder.orderNumber}&redirect-url=${redirectUrl}`;
+    }
+
     if (fullOrder && process.env.RESEND_API_KEY) {
+
       resend.emails.send({
         from: "SGB Military <onboarding@resend.dev>", // Cambiar por tu dominio verificado si tenés
         to: ADMIN_EMAIL,
@@ -157,7 +174,7 @@ export async function POST(request: NextRequest) {
       }).catch((e) => console.error("Error enviando email:", e));
     }
 
-    return NextResponse.json({ success: true, orderId: fullOrder?.id, orderNumber: fullOrder?.orderNumber });
+    return NextResponse.json({ success: true, orderId: fullOrder?.id, orderNumber: fullOrder?.orderNumber, wompiCheckoutUrl });
 
   } catch (error) {
     console.error("[API CHECKOUT] Error:", error);

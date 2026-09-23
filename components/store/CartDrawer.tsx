@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { WHATSAPP_NUMBER } from "@/lib/constants";
 import { X, Trash2, ShoppingBag, AlertCircle, Info, ChevronRight, Check } from "lucide-react";
 import { useCartStore } from "@/lib/stores/cart";
 import { formatCOP } from "@/lib/format";
@@ -145,7 +146,7 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
     setTimeout(() => {
       // Simula enviar a WhatsApp
       const msg = `Hola SGB Military, quiero finalizar mi pedido por ${formatCOP(totalPrice())}.`;
-      window.open(`https://wa.me/573148883214?text=${encodeURIComponent(msg)}`, "_blank");
+      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank");
       setProcessing(false);
     }, 800);
   };
@@ -345,3 +346,4 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
     </AnimatePresence>
   );
 }
+
