@@ -99,8 +99,9 @@ export default function CheckoutPage() {
               currency: "COP",
               amountInCents: result.amountInCents,
               reference: result.orderNumber,
-              publicKey: process.env.NEXT_PUBLIC_WOMPI_PUBLIC_KEY || "pub_test_7ACX50PPzAW8WBB3ZQwqZRO6wMZaxB6R"
-            });
+              publicKey: process.env.NEXT_PUBLIC_WOMPI_PUBLIC_KEY || "pub_test_7ACX50PPzAW8WBB3ZQwqZRO6wMZaxB6R",
+                signature: { integrity: result.signature }
+              });
             checkout.open((wompiResult: any) => {
               // Si el usuario cierra el modal, wompiResult es null o undefined, o transaction status
               if (wompiResult && wompiResult.transaction) {

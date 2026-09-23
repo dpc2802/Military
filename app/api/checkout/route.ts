@@ -12,6 +12,7 @@ import NewOrderEmail from "@/lib/emails/NewOrderEmail";
 import { generateOrderNumber } from "@/lib/format";
 import { STOCK_RESERVATION_HOURS, ADMIN_EMAIL } from "@/lib/constants";
 import { z } from "zod";
+import crypto from "crypto";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -174,7 +175,24 @@ export async function POST(request: NextRequest) {
       }).catch((e) => console.error("Error enviando email:", e));
     }
 
-    return NextResponse.json({ success: true, orderId: fullOrder?.id, orderNumber: fullOrder?.orderNumber, wompiCheckoutUrl, amountInCents: fullOrder ? Math.round(Number(fullOrder.totalAmount) * 100) : 0 });
+    
+    let signature = undefined;
+    let amountInCents = 0;
+    if (fullOrder && paymentMethod === "wompi") {
+      amountInCents = Math.round(Number(fullOrder.totalAmount) * 100);
+      const secret = process.env.WOMPI_INTEGRITY_SECRET || "test_integrity_y3BxtSzFUdNLt0Ch1zUZiMC2fp5hJaNr";
+      const stringToHash = `${fullOrder.orderNumber}${amountInCents}COP${secret}`;
+      signature = crypto.createHash("sha256").update(stringToHash).digest("hex");
+    }
+
+    return NextResponse.json({ 
+      success: true, 
+      orderId: fullOrder?.id, 
+      orderNumber: fullOrder?.orderNumber, 
+      amountInCents,
+      signature 
+    });
+
 
   } catch (error) {
     console.error("[API CHECKOUT] Error:", error);
