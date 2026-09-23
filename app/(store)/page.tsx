@@ -12,6 +12,7 @@ import { eq, desc, and } from "drizzle-orm";
 import ProductCard from "@/components/store/ProductCard";
 import { Shield, Truck, MessageCircle, Star, ChevronRight } from "lucide-react";
 import type { ProductWithDetails } from "@/types";
+import { WHATSAPP_NUMBER } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "SGB Military Shop - Equipo Táctico Colombia",
@@ -108,7 +109,7 @@ export default async function HomePage() {
               </Link>
               
               <a
-                href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}?text=Hola%2C%20quiero%20información%20sobre%20sus%20productos`}
+                href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hola%2C%20quiero%20información%20sobre%20sus%20productos`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group inline-flex items-center justify-center gap-3 bg-background/50 hover:bg-background border border-white/20 hover:border-[#25D366]/50 text-white px-8 py-4 text-sm font-heading tracking-[0.2em] uppercase transition-colors shadow-[4px_4px_0px_rgba(0,0,0,0.3)] active:translate-y-1 active:translate-x-1 active:shadow-none backdrop-blur-sm"
@@ -328,6 +329,8 @@ export default async function HomePage() {
     </div>
   );
 }
+
+
 
 
 
