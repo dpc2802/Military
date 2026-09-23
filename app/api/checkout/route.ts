@@ -161,7 +161,7 @@ export async function POST(request: NextRequest) {
       const amountInCents = Math.round(Number(fullOrder.totalAmount) * 100);
       const publicKey = process.env.NEXT_PUBLIC_WOMPI_PUBLIC_KEY || "pub_test_missing";
       const redirectUrl = `${SITE_URL}/checkout/wompi-result`;
-      wompiCheckoutUrl = `https://checkout.wompi.co/p/?public-key=${publicKey}&currency=COP&amount-in-cents=${amountInCents}&reference=${fullOrder.orderNumber}&redirect-url=${redirectUrl}`;
+      wompiCheckoutUrl = `https://checkout.wompi.co/p/?public-key=${publicKey}&currency=COP&amount-in-cents=${amountInCents}&reference=${encodeURIComponent(fullOrder.orderNumber)}&redirect-url=${encodeURIComponent(redirectUrl)}`;
     }
 
     if (fullOrder && process.env.RESEND_API_KEY) {
