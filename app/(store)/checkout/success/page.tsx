@@ -1,13 +1,13 @@
-"use client";
+﻿"use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { CheckCircle2, MessageCircle, Copy, ArrowRight } from "lucide-react";
 import { WHATSAPP_NUMBER } from "@/lib/constants";
 import { toast } from "sonner";
 
-export default function CheckoutSuccessPage() {
+function SuccessContent() {
   const searchParams = useSearchParams();
   const orderNumber = searchParams.get("order");
   const [mounted, setMounted] = useState(false);
@@ -96,5 +96,13 @@ export default function CheckoutSuccessPage() {
 
       </div>
     </div>
+  );
+}
+
+export default function CheckoutSuccessPage() {
+  return (
+    <Suspense fallback={<div className="min-h-[60vh] flex items-center justify-center text-[#9A9A94] font-heading tracking-widest uppercase">Cargando orden...</div>}>
+      <SuccessContent />
+    </Suspense>
   );
 }
