@@ -99,8 +99,7 @@ export default function CheckoutPage() {
               currency: "COP",
               amountInCents: result.amountInCents,
               reference: result.orderNumber,
-              publicKey: process.env.NEXT_PUBLIC_WOMPI_PUBLIC_KEY || "pub_test_7ACX50PPzAW8WBB3ZQwqZRO6wMZaxB6R",
-              redirectUrl: `${window.location.origin}/checkout/wompi-result`
+              publicKey: process.env.NEXT_PUBLIC_WOMPI_PUBLIC_KEY || "pub_test_7ACX50PPzAW8WBB3ZQwqZRO6wMZaxB6R"
             });
             checkout.open((wompiResult: any) => {
               // Si el usuario cierra el modal, wompiResult es null o undefined, o transaction status
