@@ -78,9 +78,9 @@ export default async function HomePage() {
           <div className="absolute inset-0 z-[1] bg-[radial-gradient(ellipse_50%_50%_at_15%_60%,rgba(194,178,128,0.08)_0%,transparent_70%)]" />
 
           {/* Gradiente izquierda (desktop) para que el texto sea legible */}
-          <div className="absolute inset-0 z-[2] hidden lg:block bg-gradient-to-r from-black via-black/75 to-black/10" />
+          <div className="absolute inset-0 z-[2] hidden lg:block bg-gradient-to-r from-black from-[15%] via-black/60 via-[30%] to-transparent to-[45%]" />
           {/* Gradiente para mobile */}
-          <div className="absolute inset-0 z-[2] lg:hidden bg-gradient-to-t from-black via-black/80 to-black/30" />
+          <div className="absolute inset-0 z-[2] lg:hidden bg-gradient-to-t from-black via-black/70 to-black/20" />
 
           {/* Viñeta inferior */}
           <div className="absolute bottom-0 left-0 right-0 h-32 z-[3] bg-gradient-to-t from-black to-transparent" />
