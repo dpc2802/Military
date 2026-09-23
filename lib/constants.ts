@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Constantes de configuración del negocio
  * Si hay variables de entorno disponibles, las usa; si no, usa los defaults.
  */
@@ -11,7 +11,7 @@ export const LOW_STOCK_THRESHOLD = 3;
 
 /** Número de WhatsApp del negocio (sin +, con código de país Colombia: 57) */
 export const WHATSAPP_NUMBER =
-  process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "573000000000";
+  process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "573226133232";
 
 /** URL base del sitio (para generar links en emails y OG tags) */
 export const SITE_URL =
@@ -26,3 +26,4 @@ export const MAX_PRODUCT_IMAGES = 6;
 
 /** Tamaño máximo de imagen en bytes (5MB) */
 export const MAX_IMAGE_SIZE_BYTES = 5 * 1024 * 1024;
+
