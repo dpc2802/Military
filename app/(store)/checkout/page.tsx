@@ -32,6 +32,7 @@ export default function CheckoutPage() {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<CheckoutForm>({
     resolver: zodResolver(checkoutFormSchema),
