@@ -174,7 +174,7 @@ export async function POST(request: NextRequest) {
       }).catch((e) => console.error("Error enviando email:", e));
     }
 
-    return NextResponse.json({ success: true, orderId: fullOrder?.id, orderNumber: fullOrder?.orderNumber, wompiCheckoutUrl });
+    return NextResponse.json({ success: true, orderId: fullOrder?.id, orderNumber: fullOrder?.orderNumber, wompiCheckoutUrl, amountInCents: fullOrder ? Math.round(Number(fullOrder.totalAmount) * 100) : 0 });
 
   } catch (error) {
     console.error("[API CHECKOUT] Error:", error);
