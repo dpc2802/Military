@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Home page de SGB Military Shop.
  * Diseño moderno, responsive, full hero.
  */
@@ -60,23 +60,49 @@ export default async function HomePage() {
           </div>
         </div>
 
-        {/* Fondo fotográfico con imagen generada (LCP) */}
+        {/* ── FONDO CAMUFLAJE ÉPICO ── */}
         <div className="absolute inset-0 z-0">
-          <Image 
-            src="/hero-bg-v2.jpg" 
-            alt="Equipo táctico militar SGB" 
-            fill 
-            className="object-cover object-[55%_center] md:object-center"
+          {/* Imagen de camuflaje oscurecida y ligeramente desaturada */}
+          <Image
+            src="/camo-bg.png"
+            alt="Fondo camuflaje SGB Military"
+            fill
+            className="object-cover object-center brightness-[0.28] saturate-75"
             priority
             quality={90}
           />
-          
-          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-background/20 z-10 hidden lg:block" />
-          <div className="absolute inset-0 bg-background/80 bg-gradient-to-t from-background via-background/70 to-transparent z-10 lg:hidden" />
-          <div 
-            className="absolute inset-0 z-20 opacity-10 pointer-events-none mix-blend-overlay"
-            style={{ backgroundImage: 'radial-gradient(rgba(194, 178, 128, 0.4) 1px, transparent 1px)', backgroundSize: '4px 4px' }}
+
+          {/* Glow verde militar en esquina superior derecha */}
+          <div className="absolute inset-0 z-[1] bg-[radial-gradient(ellipse_80%_60%_at_75%_20%,rgba(74,108,50,0.25)_0%,transparent_65%)]" />
+          {/* Glow ámbar/dorado sutil en zona de texto */}
+          <div className="absolute inset-0 z-[1] bg-[radial-gradient(ellipse_50%_50%_at_15%_60%,rgba(194,178,128,0.08)_0%,transparent_70%)]" />
+
+          {/* Gradiente izquierda (desktop) para que el texto sea legible */}
+          <div className="absolute inset-0 z-[2] hidden lg:block bg-gradient-to-r from-black via-black/75 to-black/10" />
+          {/* Gradiente para mobile */}
+          <div className="absolute inset-0 z-[2] lg:hidden bg-gradient-to-t from-black via-black/80 to-black/30" />
+
+          {/* Viñeta inferior */}
+          <div className="absolute bottom-0 left-0 right-0 h-32 z-[3] bg-gradient-to-t from-black to-transparent" />
+
+          {/* Scanlines militares para efecto de pantalla táctica */}
+          <div
+            className="absolute inset-0 z-[4] pointer-events-none opacity-40"
+            style={{
+              backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.07) 3px, rgba(0,0,0,0.07) 4px)',
+            }}
           />
+
+          {/* Grid de puntos dorados – textura táctica */}
+          <div
+            className="absolute inset-0 z-[5] opacity-[0.15] pointer-events-none mix-blend-overlay"
+            style={{ backgroundImage: 'radial-gradient(rgba(194, 178, 128, 0.5) 1px, transparent 1px)', backgroundSize: '4px 4px' }}
+          />
+
+          {/* Esquina táctica — arriba izquierda */}
+          <div className="absolute top-[140px] left-8 z-[6] w-20 h-20 border-l-2 border-t-2 border-accent/40 pointer-events-none" />
+          {/* Esquina táctica — abajo derecha */}
+          <div className="absolute bottom-12 right-8 z-[6] w-16 h-16 border-r-2 border-b-2 border-accent/25 pointer-events-none hidden lg:block" />
         </div>
 
         <div className="relative z-20 w-full max-w-7xl mx-auto px-4 md:px-8 py-20 md:py-32 flex flex-col items-center lg:items-start text-center lg:text-left mt-8">
