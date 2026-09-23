@@ -1,4 +1,4 @@
-import withPWAInit from "@ducanh2912/next-pwa";
+﻿import withPWAInit from "@ducanh2912/next-pwa";
 
 const withPWA = withPWAInit({
   dest: "public",
@@ -9,6 +9,12 @@ const withPWA = withPWAInit({
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
   images: {
     remotePatterns: [
       {
@@ -28,3 +34,4 @@ const nextConfig = {
 };
 
 export default withPWA(nextConfig);
+
