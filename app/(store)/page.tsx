@@ -67,7 +67,7 @@ export default async function HomePage() {
             src="/camo-bg.png"
             alt="Fondo camuflaje SGB Military"
             fill
-            className="object-cover object-center brightness-[0.45] saturate-90"
+            className="object-cover object-center brightness-[0.36] saturate-90"
             priority
             quality={90}
           />
