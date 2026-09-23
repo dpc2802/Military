@@ -1,0 +1,171 @@
+﻿@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #0D0F0C;
+    --foreground: #F5F5F0;
+    
+    --card: #2C2C2C;
+    --card-foreground: #F5F5F0;
+    
+    --popover: #2C2C2C;
+    --popover-foreground: #F5F5F0;
+    
+    --primary: #4B5320;
+    --primary-foreground: #F5F5F0;
+    --primary-dark: #3A3F2B;
+    --primary-light: #8F9E4B; /* Lighter shade for text on dark bg to pass WCAG AA */
+    
+    --secondary: #2C2C2C;
+    --secondary-foreground: #F5F5F0;
+    
+    --muted: #1A1A1A;
+    --muted-foreground: #9A9A94;
+    
+    --accent: #C2B280;
+    --accent-foreground: #0D0F0C;
+    
+    --destructive: #8B0000;
+    --destructive-foreground: #F5F5F0;
+
+    --surface: #2C2C2C;
+
+    --border: #3A3A3A;
+    --input: #3A3A3A;
+    --ring: #4B5320;
+    
+    /* Straight edges for tactical aesthetic */
+    --radius: 0rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-body;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading uppercase;
+  }
+}
+
+
+/* Scroll-snap utilities */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* -- NATIVE CSS SCROLL-DRIVEN ANIMATIONS (Modern 2025-2026) -- */
+@keyframes bento-reveal {
+  0% {
+    opacity: 0;
+    transform: translateY(40px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.scroll-reveal-card {
+  /* Fallback for older browsers */
+  animation: bento-reveal 0.6s ease-out both;
+}
+
+@supports (animation-timeline: view()) {
+  .scroll-reveal-card {
+    /* Uses native scroll-driven animations with 0 JS cost */
+    animation: bento-reveal linear both;
+    animation-timeline: view();
+    animation-range: entry 5% cover 25%;
+  }
+}
+
+/* View Transitions basic setup */
+@view-transition {
+  navigation: auto;
+}
+
+/* -- MARQUEE ANIMATION -- */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 25s linear infinite;
+}
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+
+/* ── MASK EDGES FOR CAROUSEL ── */
+.mask-edges {
+  mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+}
+
+/* ── INFINITE SCROLL TESTIMONIALS ── */
+@keyframes infinite-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.animate-infinite-scroll {
+  display: flex;
+  width: max-content;
+  animation: infinite-scroll 40s linear infinite;
+}
+.animate-infinite-scroll:hover {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-infinite-scroll {
+    animation: none !important;
+  }
+}
+
+/* ── INFINITE SCROLL TESTIMONIALS (FIXED) ── */
+@keyframes infinite-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@media (min-width: 768px) {
+  .desktop-infinite-scroll {
+    display: flex;
+    width: max-content;
+    animation: infinite-scroll 40s linear infinite;
+  }
+  .desktop-infinite-scroll:hover {
+    animation-play-state: paused;
+  }
+}
+@media (min-width: 768px) and (prefers-reduced-motion: reduce) {
+  .desktop-infinite-scroll {
+    animation: none !important;
+  }
+}
+
+/* ── RESPONSIVE DETAILS ACCORDION ── */
+@media (min-width: 768px) {
+  details.desktop-force-open > ul {
+    display: block !important;
+  }
+  details.desktop-force-open > summary {
+    pointer-events: none;
+    cursor: default;
+  }
+  details.desktop-force-open > summary .lucide-chevron-down {
+    display: none;
+  }
+}
+

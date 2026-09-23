@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# No indexar el panel de administración
+Disallow: /admin
+Disallow: /api/
+
+# Sitemap (generado por next-sitemap en build)
+Sitemap: https://sgbmilitary.com/sitemap.xml
