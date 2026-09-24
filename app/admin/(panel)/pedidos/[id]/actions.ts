@@ -6,6 +6,10 @@ import { eq, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { requireAdminSession } from "@/lib/auth";
 import type { OrderStatus } from "@/types";
+import { Resend } from "resend";
+import OrderShippedEmail from "@/lib/emails/OrderShippedEmail";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function updateOrderStatus(orderId: number, newStatus: OrderStatus) {
   await requireAdminSession();
@@ -59,6 +63,15 @@ export async function updateOrderStatus(orderId: number, newStatus: OrderStatus)
     }
   } else if (newStatus === "enviado") {
     updateData.shippedAt = now;
+    
+    if (order.customerEmail && process.env.RESEND_API_KEY) {
+      resend.emails.send({
+        from: "SGB Military <onboarding@resend.dev>",
+        to: order.customerEmail,
+        subject: `🚚 Tu pedido ${order.orderNumber} va en camino - SGB Military`,
+        react: OrderShippedEmail({ order: order as any }),
+      }).catch(e => console.error("[ACTIONS] Error enviando email de envío:", e));
+    }
   } else if (newStatus === "entregado") {
     updateData.deliveredAt = now;
   } else if (newStatus === "cancelado") {

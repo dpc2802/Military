@@ -4,6 +4,7 @@ import { orders, orderItems } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { Resend } from "resend";
 import PaidOrderEmail from "@/lib/emails/PaidOrderEmail";
+import CustomerReceiptEmail from "@/lib/emails/CustomerReceiptEmail";
 import { ADMIN_EMAIL, WHATSAPP_NUMBER } from "@/lib/constants";
 import { formatCOP } from "@/lib/format";
 
@@ -86,14 +87,27 @@ export async function GET(request: NextRequest) {
         });
 
         if (fullOrder) {
+          // 1. Email al dueño
           resend.emails
             .send({
-              from: "SGB Military <onboarding@resend.dev>",
+              from: "SGB Military <onboarding@resend.dev>", // Cambia a tu dominio cuando lo verifiques en Resend
               to: ADMIN_EMAIL,
               subject: `💰 PAGO CONFIRMADO: ${orderNumber} — ${totalFormatted} — SGB Military`,
               react: PaidOrderEmail({ order: fullOrder as any, transactionId }),
             })
-            .catch((e) => console.error("[WOMPI VERIFY] Error enviando email:", e));
+            .catch((e) => console.error("[WOMPI VERIFY] Error enviando email admin:", e));
+          
+          // 2. Email al cliente (Recibo de compra)
+          if (fullOrder.customerEmail) {
+            resend.emails
+              .send({
+                from: "SGB Military <onboarding@resend.dev>", // Cambia a tu dominio cuando lo verifiques
+                to: fullOrder.customerEmail,
+                subject: `Confirmación de pedido ${orderNumber} - SGB Military`,
+                react: CustomerReceiptEmail({ order: fullOrder as any, transactionId }),
+              })
+              .catch((e) => console.error("[WOMPI VERIFY] Error enviando email cliente:", e));
+          }
         }
       }
 
