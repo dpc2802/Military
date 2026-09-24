@@ -15,15 +15,16 @@ import { STOCK_RESERVATION_HOURS, ADMIN_EMAIL } from "@/lib/constants";
 import { z } from "zod";
 import crypto from "crypto";
 
-
 const checkoutSchema = z.object({
+  customerEmail: z.string().email(),
   customerName: z.string().min(2),
+  customerDni: z.string().min(5),
   customerPhone: z.string().min(7),
+  customerDepartment: z.string().min(2),
   customerCity: z.string().min(2),
   customerAddress: z.string().min(5),
   customerNotes: z.string().optional(),
-  paymentMethod: z.enum(['whatsapp', 'wompi']).default('whatsapp'),
-  paymentMethod: z.enum(['whatsapp', 'wompi']).default('whatsapp'),
+  paymentMethod: z.enum(["whatsapp", "wompi"]).default("whatsapp"),
   items: z.array(
     z.object({
       variantId: z.number(),
@@ -68,15 +69,13 @@ export async function POST(request: NextRequest) {
       const availableStock = dbVariant.stock - dbVariant.reservedStock;
       if (availableStock < item.quantity) {
         return NextResponse.json(
-          { error: `No hay stock suficiente para ${item.productName} (Talla: ${item.size ?? 'Única'}). Quedan ${availableStock}.` },
+          { error: `No hay stock suficiente para ${item.productName} (Talla: ${item.size ?? "Única"}). Quedan ${availableStock}.` },
           { status: 400 }
         );
       }
     }
 
-    // 2. Calcular total real desde los precios enviados (validados)
-    // Para simplificar, confiamos en el unitPrice enviado si querés, 
-    // pero idealmente deberíamos recalcularlo usando dbVariant.priceOverride ?? dbVariant.product.price
+    // 2. Calcular total real desde los precios
     let totalAmount = 0;
     const finalItems = items.map((item) => {
       const dbVariant = dbVariants.find((v) => v.id === item.variantId)!;
@@ -91,34 +90,30 @@ export async function POST(request: NextRequest) {
       };
     });
 
-    // 3. Crear Pedido y Reservar Stock en Transacción simulada (Neon HTTP driver limita transacciones complejas, hacemos inserts/updates secuenciales)
-    
-    // Primero, crear la orden base
+    // 3. Crear Pedido y Reservar Stock
     const [newOrder] = await db.insert(orders).values({
-      orderNumber: "TEMP", // Se actualiza abajo
+      orderNumber: "TEMP",
+      customerEmail: customerData.customerEmail,
       customerName: customerData.customerName,
+      customerDni: customerData.customerDni,
+      customerDepartment: customerData.customerDepartment,
       customerPhone: customerData.customerPhone,
       customerCity: customerData.customerCity,
       customerAddress: customerData.customerAddress,
       customerNotes: customerData.customerNotes,
-      paymentMethod: paymentMethod,
-      status: paymentMethod === 'wompi' ? 'pendiente_pago' : 'pendiente_whatsapp',
-      status: paymentMethod === 'wompi' ? 'pendiente_pago' : 'pendiente_whatsapp',
       paymentMethod,
+      status: paymentMethod === "wompi" ? "pendiente_pago" : "pendiente_whatsapp",
       totalAmount: totalAmount.toString(),
       stockReservationExpiresAt: new Date(Date.now() + STOCK_RESERVATION_HOURS * 60 * 60 * 1000),
     }).returning();
 
     if (!newOrder) throw new Error("No se pudo crear la orden");
 
-    // Actualizar Order Number real usando el ID
     const orderNum = generateOrderNumber(newOrder.id);
     await db.update(orders).set({ orderNumber: orderNum }).where(eq(orders.id, newOrder.id));
     newOrder.orderNumber = orderNum;
 
-    // Crear los items y reservar stock
     for (const item of finalItems) {
-      // Crear order item
       await db.insert(orderItems).values({
         orderId: newOrder.id,
         productId: item.productId,
@@ -132,50 +127,35 @@ export async function POST(request: NextRequest) {
         subtotal: item.subtotal.toString(),
       });
 
-      // Aumentar stock reservado
       await db.update(productVariants)
-        .set({
-          reservedStock: sql`${productVariants.reservedStock} + ${item.quantity}`,
-        })
+        .set({ reservedStock: sql`${productVariants.reservedStock} + ${item.quantity}` })
         .where(eq(productVariants.id, item.variantId));
     }
 
-    // 4. Enviar email al admin de forma asíncrona (no bloquea el response)
+    // 4. Obtener orden completa
     const fullOrder = await db.query.orders.findFirst({
       where: eq(orders.id, newOrder.id),
       with: {
         items: {
           with: {
-            product: {
-              columns: { name: true, slug: true, images: true }
-            }
+            product: { columns: { name: true, slug: true, images: true } }
           }
         }
       },
     });
 
-    
-    const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
-    let wompiCheckoutUrl = undefined;
-    
-    if (paymentMethod === "wompi" && fullOrder) {
-      const amountInCents = Math.round(Number(fullOrder.totalAmount) * 100);
-      const publicKey = process.env.NEXT_PUBLIC_WOMPI_PUBLIC_KEY || "pub_test_missing";
-      const redirectUrl = `${SITE_URL}/checkout/wompi-result`;
-      wompiCheckoutUrl = `https://checkout.wompi.co/p/?public-key=${publicKey}&currency=COP&amount-in-cents=${amountInCents}&reference=${encodeURIComponent(fullOrder.orderNumber)}&redirect-url=${encodeURIComponent(redirectUrl)}`;
-    }
-
-    if (fullOrder && process.env.RESEND_API_KEY) {
-
-      resend.emails.send({
-        from: "SGB Military <onboarding@resend.dev>", // Cambiar por tu dominio verificado si tenés
+    // 5. Enviar email si es WhatsApp manual
+    if (fullOrder && paymentMethod === "whatsapp" && process.env.SMTP_USER) {
+      const emailHtml = render(NewOrderEmail({ order: fullOrder as any }));
+      mailer.sendMail({
+        from: SENDER_EMAIL,
         to: ADMIN_EMAIL,
-        subject: `NUEVO PEDIDO: ${fullOrder.orderNumber} - SGB Military Shop`,
-        react: NewOrderEmail({ order: fullOrder }),
-      }).catch((e) => console.error("Error enviando email:", e));
+        subject: `NUEVO PEDIDO MANUAL: ${fullOrder.orderNumber} - SGB Military Shop`,
+        html: emailHtml,
+      }).catch((e) => console.error("[API CHECKOUT] Error enviando email manual:", e));
     }
 
-    
+    // 6. Generar firma de Wompi
     let signature = undefined;
     let amountInCents = 0;
     if (fullOrder && paymentMethod === "wompi") {
@@ -192,7 +172,6 @@ export async function POST(request: NextRequest) {
       amountInCents,
       signature 
     });
-
 
   } catch (error) {
     console.error("[API CHECKOUT] Error:", error);
