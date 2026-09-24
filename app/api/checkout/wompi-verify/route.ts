@@ -1,7 +1,13 @@
-﻿import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db";
-import { orders } from "@/db/schema";
+import { orders, orderItems } from "@/db/schema";
 import { eq } from "drizzle-orm";
+import { Resend } from "resend";
+import PaidOrderEmail from "@/lib/emails/PaidOrderEmail";
+import { ADMIN_EMAIL, WHATSAPP_NUMBER } from "@/lib/constants";
+import { formatCOP } from "@/lib/format";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -12,9 +18,9 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    // 1. Check with Wompi API (test environment)
+    // 1. Verificar transacción con Wompi (sandbox)
     const wompiRes = await fetch(`https://sandbox.wompi.co/v1/transactions/${transactionId}`);
-    
+
     if (!wompiRes.ok) {
       return NextResponse.json({ error: "Transaction not found in Wompi" }, { status: 404 });
     }
@@ -22,43 +28,98 @@ export async function GET(request: NextRequest) {
     const wompiData = await wompiRes.json();
     const transaction = wompiData.data;
 
-    // 2. Find the order in our DB
+    // 2. Buscar el pedido en la base de datos
     const orderNumber = transaction.reference;
     const order = await db.query.orders.findFirst({
       where: eq(orders.orderNumber, orderNumber),
+      with: {
+        items: true,
+      },
     });
 
     if (!order) {
       return NextResponse.json({ error: "Order not found" }, { status: 404 });
     }
 
-    // 3. Update the order status based on Wompi status
+    // 3. Actualizar estado del pedido
     let newStatus = order.status;
-    
+
     if (transaction.status === "APPROVED") {
       newStatus = "confirmado";
-    } else if (transaction.status === "DECLINED" || transaction.status === "ERROR" || transaction.status === "VOIDED") {
-      // Devolvemos el estado a algo que el admin pueda ver, o cancelado
+    } else if (
+      transaction.status === "DECLINED" ||
+      transaction.status === "ERROR" ||
+      transaction.status === "VOIDED"
+    ) {
       newStatus = "cancelado";
     }
-    
+
+    const wasAlreadyConfirmed = order.status === "confirmado";
+
     if (order.status !== newStatus) {
-      await db.update(orders)
-        .set({ 
+      await db
+        .update(orders)
+        .set({
           status: newStatus,
           paymentId: transactionId,
-          confirmedAt: newStatus === "confirmado" ? new Date() : order.confirmedAt
+          confirmedAt: newStatus === "confirmado" ? new Date() : order.confirmedAt,
         })
         .where(eq(orders.id, order.id));
     }
 
-    return NextResponse.json({ 
-      success: true, 
-      orderNumber, 
-      status: transaction.status,
-      dbStatus: newStatus
-    });
+    // 4. Si el pago fue APROBADO y no estaba ya confirmado → notificar al dueño
+    if (newStatus === "confirmado" && !wasAlreadyConfirmed) {
+      const totalFormatted = formatCOP(Number(order.totalAmount));
 
+      // ── Email al dueño via Resend ──────────────────────────────────────────
+      if (process.env.RESEND_API_KEY) {
+        // Cargar el pedido con items completos para el email
+        const fullOrder = await db.query.orders.findFirst({
+          where: eq(orders.id, order.id),
+          with: {
+            items: {
+              with: {
+                product: { columns: { name: true, slug: true, images: true } },
+              },
+            },
+          },
+        });
+
+        if (fullOrder) {
+          resend.emails
+            .send({
+              from: "SGB Military <onboarding@resend.dev>",
+              to: ADMIN_EMAIL,
+              subject: `💰 PAGO CONFIRMADO: ${orderNumber} — ${totalFormatted} — SGB Military`,
+              react: PaidOrderEmail({ order: fullOrder as any, transactionId }),
+            })
+            .catch((e) => console.error("[WOMPI VERIFY] Error enviando email:", e));
+        }
+      }
+
+      // ── WhatsApp al dueño (link de apertura rápida) ───────────────────────
+      // Guardamos la URL en la respuesta para que el cliente la pueda usar si quiere
+      const ownerWhatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+        `🔔 *NUEVO PAGO CONFIRMADO*\n\nPedido: *${orderNumber}*\nTotal: *${totalFormatted}*\nCliente: ${order.customerName}\nTeléfono: ${order.customerPhone}\nCiudad: ${order.customerCity}\n\n✅ Pago vía Wompi aprobado. Procede con el envío.`
+      )}`;
+
+      return NextResponse.json({
+        success: true,
+        orderNumber,
+        status: transaction.status,
+        dbStatus: newStatus,
+        notified: true,
+        ownerWhatsappUrl,
+      });
+    }
+
+    return NextResponse.json({
+      success: true,
+      orderNumber,
+      status: transaction.status,
+      dbStatus: newStatus,
+      notified: false,
+    });
   } catch (error) {
     console.error("[WOMPI VERIFY] Error:", error);
     return NextResponse.json({ error: "Server error" }, { status: 500 });
