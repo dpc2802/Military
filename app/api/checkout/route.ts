@@ -147,7 +147,7 @@ export async function POST(request: NextRequest) {
     // 5. Enviar email si es WhatsApp manual
     if (fullOrder && paymentMethod === "whatsapp" && process.env.SMTP_USER) {
       const emailHtml = render(NewOrderEmail({ order: fullOrder as any }));
-      mailer.sendMail({
+      await mailer.sendMail({
         from: SENDER_EMAIL,
         to: ADMIN_EMAIL,
         subject: `NUEVO PEDIDO MANUAL: ${fullOrder.orderNumber} - SGB Military Shop`,

@@ -89,7 +89,7 @@ export async function GET(request: NextRequest) {
         if (fullOrder) {
           // 1. Email al dueño
           const adminHtml = render(PaidOrderEmail({ order: fullOrder as any, transactionId }));
-          mailer.sendMail({
+          await mailer.sendMail({
             from: SENDER_EMAIL,
             to: ADMIN_EMAIL,
             subject: `💰 PAGO CONFIRMADO: ${orderNumber} — ${totalFormatted} — SGB Military`,
@@ -99,7 +99,7 @@ export async function GET(request: NextRequest) {
           // 2. Email al cliente (Recibo de compra)
           if (fullOrder.customerEmail) {
             const clientHtml = render(CustomerReceiptEmail({ order: fullOrder as any, transactionId }));
-            mailer.sendMail({
+            await mailer.sendMail({
               from: SENDER_EMAIL,
               to: fullOrder.customerEmail,
               subject: `Confirmación de pedido ${orderNumber} - SGB Military`,
