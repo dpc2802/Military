@@ -1,4 +1,6 @@
-import { NextResponse } from "next/server";
+﻿import fs from "fs";
+
+const testRouteCode = `import { NextResponse } from "next/server";
 import { mailer, SENDER_EMAIL } from "@/lib/mail";
 import { render } from "@react-email/render";
 import CustomerReceiptEmail from "@/lib/emails/CustomerReceiptEmail";
@@ -63,3 +65,7 @@ export async function GET() {
     return NextResponse.json({ success: false, phase: "UNKNOWN", error: error.message, stack: error.stack }, { status: 500 });
   }
 }
+`;
+
+fs.writeFileSync("c:/Users/HP Core i5/Desktop/SGB MILITARY/app/api/test-email/route.ts", testRouteCode, "utf-8");
+console.log("Updated test route to include React Email Render");
