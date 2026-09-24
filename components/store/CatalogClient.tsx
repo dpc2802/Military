@@ -42,7 +42,6 @@ export default function CatalogClient({ categories, initialFilters }: CatalogCli
   // States
   const [busqueda, setBusqueda] = useState(initialFilters.busqueda);
   // Sincronizar búsqueda global desde la URL
-  const searchParams = useSearchParams();
   useEffect(() => {
     const q = searchParams.get("busqueda");
     if (q !== null && q !== busqueda) {
