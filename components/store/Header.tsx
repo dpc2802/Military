@@ -3,15 +3,17 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ShoppingCart, Menu, X, ChevronRight } from "lucide-react";
+import { ShoppingCart, Menu, X, ChevronRight, Search } from "lucide-react";
 import { useCartStore } from "@/lib/stores/cart";
 import { AnimatePresence, motion } from "framer-motion";
 import CartDrawer from "./CartDrawer";
+import SearchOverlay from "./SearchOverlay";
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const { totalItems } = useCartStore();
 
@@ -81,6 +83,13 @@ export default function Header() {
           {/* Right Actions */}
           <div className="flex items-center gap-4 lg:gap-6 z-50">
             <button 
+              onClick={() => setSearchOpen(true)}
+              className="p-2 text-muted-foreground hover:text-foreground transition-colors group"
+              aria-label="Buscar"
+            >
+              <Search className="w-5 h-5 transition-transform group-hover:scale-110" />
+            </button>
+            <button 
               onClick={() => setCartOpen(true)}
               className="relative p-2 text-muted-foreground hover:text-foreground transition-colors group"
               aria-label="Abrir carrito"
@@ -107,6 +116,7 @@ export default function Header() {
 
       {/* Cart Drawer */}
       <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
+      <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
 
       {/* Mobile Nav Overlay */}
       <AnimatePresence>
