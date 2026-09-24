@@ -11,7 +11,7 @@ import { render } from "@react-email/render";
 import { mailer, SENDER_EMAIL } from "@/lib/mail";
 
 
-export async function updateOrderStatus(orderId: number, newStatus: OrderStatus) {
+export async function updateOrderStatus(orderId: number, newStatus: OrderStatus, trackingData?: { company: string; tracking: string }) {
   await requireAdminSession();
 
   const order = await db.query.orders.findFirst({

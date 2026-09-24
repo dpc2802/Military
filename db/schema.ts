@@ -94,6 +94,8 @@ export const orders = pgTable("orders", {
   paymentId: varchar("payment_id", { length: 128 }),
   // Total en COP
   totalAmount: decimal("total_amount", { precision: 12, scale: 2 }).notNull(),
+    trackingNumber: varchar("tracking_number", { length: 128 }),
+    shippingCompany: varchar("shipping_company", { length: 64 }),
   // Reserva de stock: expira después de X horas si no se confirma
   stockReservationExpiresAt: timestamp("stock_reservation_expires_at"),
   // Fecha en que el admin confirmó el pedido (descuenta stock en firme)
@@ -197,4 +199,5 @@ export type ProductImage = {
   altText: string;
   sortOrder: number;
 };
+
 

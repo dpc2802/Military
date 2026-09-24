@@ -1,4 +1,7 @@
-"use client";
+﻿import fs from "fs";
+const path = "c:/Users/HP Core i5/Desktop/SGB MILITARY/app/admin/(panel)/pedidos/[id]/StatusSelect.tsx";
+
+const code = `"use client";
 
 import { useState } from "react";
 import { updateOrderStatus } from "./actions";
@@ -58,7 +61,7 @@ export function StatusSelect({ orderId, currentStatus, trackingNumber, shippingC
       return;
     }
 
-    if (confirm(`¿Cambiar estado a ${newStatus}?`)) {
+    if (confirm(\`¿Cambiar estado a \${newStatus}?\`)) {
       handleUpdate(newStatus);
     } else {
       // Revert select visually
@@ -150,3 +153,6 @@ export function StatusSelect({ orderId, currentStatus, trackingNumber, shippingC
     </div>
   );
 }
+`;
+fs.writeFileSync(path, code, "utf-8");
+console.log("Updated StatusSelect with shipping modal");
