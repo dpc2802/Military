@@ -30,7 +30,7 @@ export default function SearchOverlay({ open, onClose }: SearchOverlayProps) {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (query.trim()) {
-      router.push(`/productos?busqueda=${encodeURIComponent(query.trim())}`);
+      window.location.href = `/productos?busqueda=${encodeURIComponent(query.trim())}`;
       onClose();
       setQuery("");
     }

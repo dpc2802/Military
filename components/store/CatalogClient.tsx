@@ -92,7 +92,7 @@ export default function CatalogClient({ categories, initialFilters }: CatalogCli
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
 
     try {
-      const res = await fetch(`/api/products?${params.toString()}`);
+      const res = await fetch(`/api/products?${params.toString()}`, { cache: 'no-store' });
       if (!res.ok) throw new Error("Fallo en red");
       const data = await res.json() as { products: ProductWithDetails[]; total: number };
       setProducts(data.products ?? []);
