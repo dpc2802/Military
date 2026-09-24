@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Zoom from "react-medium-image-zoom";
+import "react-medium-image-zoom/dist/styles.css";
 import Link from "next/link";
 import { ShoppingCart, Check, ShieldAlert, Star, ChevronRight, Info, Truck } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
