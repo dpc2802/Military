@@ -7,14 +7,14 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db";
 import { orders, orderItems, productVariants } from "@/db/schema";
 import { eq, inArray, sql } from "drizzle-orm";
-import { Resend } from "resend";
 import NewOrderEmail from "@/lib/emails/NewOrderEmail";
+import { render } from "@react-email/render";
+import { mailer, SENDER_EMAIL } from "@/lib/mail";
 import { generateOrderNumber } from "@/lib/format";
 import { STOCK_RESERVATION_HOURS, ADMIN_EMAIL } from "@/lib/constants";
 import { z } from "zod";
 import crypto from "crypto";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 const checkoutSchema = z.object({
   customerName: z.string().min(2),
