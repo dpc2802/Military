@@ -88,7 +88,7 @@ export async function GET(request: NextRequest) {
 
         if (fullOrder) {
           // 1. Email al dueño
-          const adminHtml = render(PaidOrderEmail({ order: fullOrder as any, transactionId }));
+          const adminHtml = await render(PaidOrderEmail({ order: fullOrder as any, transactionId }));
           await mailer.sendMail({
             from: SENDER_EMAIL,
             to: ADMIN_EMAIL,
@@ -98,7 +98,7 @@ export async function GET(request: NextRequest) {
           
           // 2. Email al cliente (Recibo de compra)
           if (fullOrder.customerEmail) {
-            const clientHtml = render(CustomerReceiptEmail({ order: fullOrder as any, transactionId }));
+            const clientHtml = await render(CustomerReceiptEmail({ order: fullOrder as any, transactionId }));
             await mailer.sendMail({
               from: SENDER_EMAIL,
               to: fullOrder.customerEmail,

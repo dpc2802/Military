@@ -31,8 +31,8 @@ export async function GET() {
 
     let clientHtml, adminHtml;
     try {
-      clientHtml = render(CustomerReceiptEmail({ order: dummyOrder as any, transactionId: "trans123" }));
-      adminHtml = render(PaidOrderEmail({ order: dummyOrder as any, transactionId: "trans123" }));
+      clientHtml = await render(CustomerReceiptEmail({ order: dummyOrder as any, transactionId: "trans123" }));
+      adminHtml = await render(PaidOrderEmail({ order: dummyOrder as any, transactionId: "trans123" }));
     } catch (renderError: any) {
       return NextResponse.json({ 
         success: false, 

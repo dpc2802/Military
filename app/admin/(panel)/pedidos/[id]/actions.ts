@@ -65,7 +65,7 @@ export async function updateOrderStatus(orderId: number, newStatus: OrderStatus)
     updateData.shippedAt = now;
     
     if (order.customerEmail && process.env.SMTP_USER) {
-      const html = render(OrderShippedEmail({ order: order as any }));
+      const html = await render(OrderShippedEmail({ order: order as any }));
       await mailer.sendMail({
         from: SENDER_EMAIL,
         to: order.customerEmail,
