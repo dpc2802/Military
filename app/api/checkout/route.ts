@@ -24,6 +24,7 @@ const checkoutSchema = z.object({
   customerCity: z.string().min(2),
   customerAddress: z.string().min(5),
   customerNotes: z.string().optional(),
+  acceptTerms: z.boolean(),
   paymentMethod: z.enum(["whatsapp", "wompi"]).default("whatsapp"),
   items: z.array(
     z.object({

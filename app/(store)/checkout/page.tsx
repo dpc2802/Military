@@ -22,6 +22,9 @@ const checkoutFormSchema = z.object({
   customerCity: z.string().min(2, "Ingresa tu ciudad"),
   customerAddress: z.string().min(5, "Ingresa la dirección de envío"),
   customerNotes: z.string().optional(),
+  acceptTerms: z.boolean().refine(val => val === true, {
+    message: "Debes aceptar la Política de Tratamiento de Datos Personales para continuar.",
+  }),
   paymentMethod: z.enum(['whatsapp', 'wompi']).default('wompi'),
 });
 

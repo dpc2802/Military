@@ -119,7 +119,9 @@ export default async function AdminOrderDetailPage({ params }: { params: { id: s
             <div className="space-y-3 text-sm font-body">
               <div>
                 <p className="text-xs text-muted-foreground uppercase tracking-widest">Cédula</p>
-                <p>{order.customerDni}</p>
+                <p className="font-mono text-sm blur-sm hover:blur-none transition-all cursor-pointer inline-block bg-white/5 px-2 py-0.5 rounded" title="Pasa el mouse para revelar">
+                  {order.customerDni}
+                </p>
               </div>
               <div>
                 <p className="text-xs text-muted-foreground uppercase tracking-widest">Correo</p>
