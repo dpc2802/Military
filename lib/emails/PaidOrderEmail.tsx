@@ -1,15 +1,10 @@
-/**
- * Plantilla de email para notificar al admin sobre un pedido PAGADO vía Wompi.
- * Tiene el badge verde "PAGO CONFIRMADO" en vez de "Pendiente WhatsApp".
- */
-
 import * as React from "react";
 import { formatCOP, formatDateBogota } from "@/lib/format";
 import type { OrderWithItems } from "@/types";
 
 interface PaidOrderEmailProps {
   order: OrderWithItems;
-  transactionId?: string;
+  transactionId: string;
 }
 
 export default function PaidOrderEmail({ order, transactionId }: PaidOrderEmailProps) {
@@ -19,89 +14,139 @@ export default function PaidOrderEmail({ order, transactionId }: PaidOrderEmailP
     <html lang="es">
       <head>
         <meta charSet="utf-8" />
-        <style>{`
-          body { margin: 0; padding: 0; background-color: #0D0F0C; font-family: Arial, sans-serif; }
-          .container { max-width: 600px; margin: 0 auto; padding: 24px; background-color: #2C2C2C; border: 1px solid #3A3A3A; }
-          .header-title { color: #C2B280; font-size: 20px; letter-spacing: 4px; font-weight: 700; text-transform: uppercase; margin: 0 0 4px; }
-          .header-sub { color: #9CA3AF; font-size: 12px; margin: 0 0 24px; letter-spacing: 2px; }
-          .hr { border: none; border-top: 1px solid #3A3A3A; margin: 0 0 24px; }
-          .order-num { color: #C2B280; font-size: 22px; font-weight: 700; margin: 0; }
-          .order-date { color: #9CA3AF; font-size: 12px; margin: 4px 0 0; }
-          .badge-paid { display: inline-block; background-color: #166534; color: #86efac; padding: 4px 12px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; border: 1px solid #15803d; }
-          .alert-box { background-color: #14532d; border: 1px solid #16a34a; padding: 12px 16px; margin-bottom: 24px; }
-          .alert-text { color: #86efac; font-size: 13px; margin: 0; font-weight: 600; }
-          .section { background-color: #1A1A1A; padding: 16px; margin-bottom: 24px; border: 1px solid #3A3A3A; }
-          .label { color: #9CA3AF; font-size: 11px; margin: 0 0 12px; letter-spacing: 2px; text-transform: uppercase; }
-          .customer-name { color: #F5F5F0; font-size: 15px; margin: 0 0 4px; font-weight: 600; }
-          .customer-detail { color: #9CA3AF; font-size: 13px; margin: 0 0 4px; }
-          .item-name { color: #F5F5F0; font-size: 14px; margin: 0 0 4px; font-weight: 600; }
-          .item-detail { color: #9CA3AF; font-size: 12px; margin: 0; }
-          .item-price { color: #C2B280; font-size: 14px; margin: 0; font-weight: 600; }
-          .total-label { color: #F5F5F0; font-size: 16px; font-weight: 700; }
-          .total-price { color: #4ade80; font-size: 20px; font-weight: 700; }
-          .tx-id { color: #9CA3AF; font-size: 11px; margin: 4px 0 0; font-family: monospace; }
-          .footer { color: #9CA3AF; font-size: 11px; text-align: center; margin: 0; }
-          .action-btn { display: inline-block; background-color: #C2B280; color: #0D0F0C; padding: 10px 24px; font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; margin-top: 16px; }
-        `}</style>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
-      <body>
-        <div className="container">
-          <h1 className="header-title">SGB MILITARY SHOP</h1>
-          <p className="header-sub">💳 PAGO ELECTRÓNICO CONFIRMADO — WOMPI</p>
+      <body style={{ margin: 0, padding: "20px", backgroundColor: "#0A0A0A", fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif", color: "#EDEDED", WebkitFontSmoothing: "antialiased" }}>
+        
+        <table width="100%" cellPadding="0" cellSpacing="0" style={{ maxWidth: "600px", margin: "0 auto", backgroundColor: "#121212", border: "1px solid #333333", borderRadius: "8px", overflow: "hidden" }}>
+          
+          {/* Header */}
+          <tr>
+            <td style={{ padding: "30px 30px", borderBottom: "1px solid #333333", backgroundColor: "#0f1410", textAlign: "center" }}>
+              <h1 style={{ margin: "0", color: "#C2B280", fontSize: "22px", letterSpacing: "3px", textTransform: "uppercase" }}>
+                SGB MILITARY
+              </h1>
+              <p style={{ margin: "8px 0 0", color: "#4ade80", fontSize: "12px", letterSpacing: "1px", textTransform: "uppercase", fontWeight: "bold" }}>
+                NUEVO PAGO CONFIRMADO (WOMPI)
+              </p>
+            </td>
+          </tr>
 
-          <hr className="hr" />
+          {/* Info Block */}
+          <tr>
+            <td style={{ padding: "30px" }}>
+              
+              <table width="100%" cellPadding="0" cellSpacing="0" style={{ marginBottom: "25px" }}>
+                <tr>
+                  <td align="left">
+                    <p style={{ margin: "0", color: "#C2B280", fontSize: "20px", fontWeight: "bold" }}>{order.orderNumber}</p>
+                    <p style={{ margin: "4px 0 0", color: "#888888", fontSize: "13px" }}>{formatDateBogota(order.createdAt)}</p>
+                    <p style={{ margin: "4px 0 0", color: "#666666", fontSize: "11px" }}>Ref Wompi: {transactionId}</p>
+                  </td>
+                  <td align="right" valign="top">
+                    <span style={{ backgroundColor: "#142c16", color: "#4ade80", padding: "6px 12px", borderRadius: "4px", fontSize: "11px", fontWeight: "bold", letterSpacing: "1px", border: "1px solid #254a28" }}>
+                      PAGADO
+                    </span>
+                  </td>
+                </tr>
+              </table>
 
-          {/* Alert verde */}
-          <div className="alert-box">
-            <p className="alert-text">✅ El pago fue aprobado automáticamente. Procede a preparar el envío.</p>
-          </div>
-
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "24px" }}>
-            <div>
-              <p className="order-num">{order.orderNumber}</p>
-              <p className="order-date">{formatDateBogota(order.createdAt)}</p>
-              {transactionId && <p className="tx-id">TX: {transactionId}</p>}
-            </div>
-            <span className="badge-paid">✓ Pago Confirmado</span>
-          </div>
-
-          <div className="section">
-            <p className="label">Datos del cliente</p>
-            <p className="customer-name">{order.customerName}</p>
-            <p className="customer-detail">📞 {order.customerPhone}</p>
-            <p className="customer-detail">📍 {order.customerCity} — {order.customerAddress}</p>
-            {order.customerNotes && (
-              <p className="customer-detail">📝 {order.customerNotes}</p>
-            )}
-          </div>
-
-          <p className="label">Productos pedidos</p>
-          {order.items.map((item, i) => (
-            <div key={i} style={{ borderBottom: "1px solid #3A3A3A", paddingBottom: "12px", marginBottom: "12px" }}>
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <div>
-                  <p className="item-name">{item.productName}</p>
-                  <p className="item-detail">
-                    {item.size && `Talla: ${item.size}`}
-                    {item.color && ` / Color: ${item.color}`}
-                    {` × ${item.quantity}`}
-                  </p>
-                </div>
-                <p className="item-price">{formatCOP(Number(item.subtotal))}</p>
+              {/* Customer Box */}
+              <div style={{ backgroundColor: "#1A1A1A", border: "1px solid #2A2A2A", borderRadius: "6px", padding: "20px", marginBottom: "30px" }}>
+                <p style={{ margin: "0 0 15px", color: "#888888", fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase" }}>
+                  Datos del Cliente (Para envío)
+                </p>
+                <table width="100%" cellPadding="0" cellSpacing="0" style={{ fontSize: "14px", lineHeight: "1.5" }}>
+                  <tr>
+                    <td style={{ color: "#888888", width: "100px", paddingBottom: "8px" }}>Nombre:</td>
+                    <td style={{ color: "#FFFFFF", fontWeight: "bold", paddingBottom: "8px" }}>{order.customerName}</td>
+                  </tr>
+                  <tr>
+                    <td style={{ color: "#888888", paddingBottom: "8px" }}>Cédula:</td>
+                    <td style={{ color: "#FFFFFF", paddingBottom: "8px" }}>{order.customerDni || "N/A"}</td>
+                  </tr>
+                  <tr>
+                    <td style={{ color: "#888888", paddingBottom: "8px" }}>Correo:</td>
+                    <td style={{ color: "#FFFFFF", paddingBottom: "8px" }}>{order.customerEmail || "N/A"}</td>
+                  </tr>
+                  <tr>
+                    <td style={{ color: "#888888", paddingBottom: "8px" }}>Teléfono:</td>
+                    <td style={{ color: "#FFFFFF", paddingBottom: "8px" }}>{order.customerPhone}</td>
+                  </tr>
+                  <tr>
+                    <td style={{ color: "#888888", paddingBottom: "8px" }}>Depto:</td>
+                    <td style={{ color: "#FFFFFF", paddingBottom: "8px" }}>{order.customerDepartment || "N/A"}</td>
+                  </tr>
+                  <tr>
+                    <td style={{ color: "#888888", paddingBottom: "8px" }}>Ciudad:</td>
+                    <td style={{ color: "#FFFFFF", paddingBottom: "8px" }}>{order.customerCity}</td>
+                  </tr>
+                  <tr>
+                    <td style={{ color: "#888888" }}>Dirección:</td>
+                    <td style={{ color: "#FFFFFF" }}>{order.customerAddress}</td>
+                  </tr>
+                </table>
+                {order.customerNotes && (
+                  <div style={{ marginTop: "15px", paddingTop: "15px", borderTop: "1px solid #333333" }}>
+                    <p style={{ margin: 0, color: "#C2B280", fontSize: "13px" }}><strong>Notas:</strong> {order.customerNotes}</p>
+                  </div>
+                )}
               </div>
-            </div>
-          ))}
 
-          <div style={{ display: "flex", justifyContent: "space-between", marginTop: "8px" }}>
-            <span className="total-label">TOTAL COBRADO</span>
-            <span className="total-price">{formatCOP(total)}</span>
-          </div>
+              {/* Items List */}
+              <p style={{ margin: "0 0 15px", color: "#888888", fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase" }}>
+                Resumen de Productos
+              </p>
+              
+              <table width="100%" cellPadding="0" cellSpacing="0">
+                {order.items.map((item, i) => (
+                  <tr key={i}>
+                    <td style={{ paddingBottom: "15px", borderBottom: i === order.items.length - 1 ? "none" : "1px solid #333333", paddingTop: i === 0 ? "0" : "15px" }}>
+                      <p style={{ margin: "0 0 4px", color: "#FFFFFF", fontSize: "15px", fontWeight: "bold" }}>
+                        {item.productName}
+                      </p>
+                      <p style={{ margin: "0", color: "#888888", fontSize: "13px" }}>
+                        {item.size ? `Talla: ${item.size}` : ""}
+                        {item.size && item.color ? " • " : ""}
+                        {item.color ? `Color: ${item.color}` : ""}
+                        {(item.size || item.color) ? " • " : ""}
+                        Cantidad: {item.quantity}
+                      </p>
+                    </td>
+                    <td align="right" valign="top" style={{ paddingTop: i === 0 ? "0" : "15px", borderBottom: i === order.items.length - 1 ? "none" : "1px solid #333333" }}>
+                      <p style={{ margin: "0", color: "#C2B280", fontSize: "15px", fontWeight: "bold" }}>
+                        {formatCOP(Number(item.subtotal))}
+                      </p>
+                    </td>
+                  </tr>
+                ))}
+              </table>
 
-          <hr className="hr" style={{ marginTop: "20px" }} />
-          <p className="footer">
-            El dinero fue cobrado automáticamente vía Wompi. Contacta al cliente para coordinar el envío.
-          </p>
-        </div>
+            </td>
+          </tr>
+
+          {/* Footer Total */}
+          <tr>
+            <td style={{ backgroundColor: "#1A1A1A", padding: "20px 30px", borderTop: "1px solid #333333" }}>
+              <table width="100%" cellPadding="0" cellSpacing="0">
+                <tr>
+                  <td align="left">
+                    <span style={{ color: "#FFFFFF", fontSize: "16px", fontWeight: "bold" }}>PAGADO (WOMPI)</span>
+                  </td>
+                  <td align="right">
+                    <span style={{ color: "#4ade80", fontSize: "22px", fontWeight: "bold" }}>{formatCOP(total)}</span>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+        </table>
+        
+        <p style={{ textAlign: "center", color: "#666666", fontSize: "12px", marginTop: "20px" }}>
+          Ingresa a tu panel de administración para ver detalles y gestionar el envío.
+        </p>
+
       </body>
     </html>
   );

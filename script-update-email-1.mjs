@@ -1,4 +1,6 @@
-import * as React from "react";
+﻿import fs from "fs";
+
+const newTemplate = `import * as React from "react";
 import { formatCOP, formatDateBogota } from "@/lib/format";
 import type { OrderWithItems } from "@/types";
 
@@ -104,11 +106,9 @@ export default function NewOrderEmail({ order }: NewOrderEmailProps) {
                         {item.productName}
                       </p>
                       <p style={{ margin: "0", color: "#888888", fontSize: "13px" }}>
-                        {item.size ? `Talla: ${item.size}` : ""}
-                        {item.size && item.color ? " • " : ""}
-                        {item.color ? `Color: ${item.color}` : ""}
-                        {(item.size || item.color) ? " • " : ""}
-                        Cantidad: {item.quantity}
+                        {item.size && `Talla: ${item.size}`}
+                        {item.color && ` • Color: ${item.color}`}
+                        {` • Cantidad: ${item.quantity}`}
                       </p>
                     </td>
                     <td align="right" valign="top" style={{ paddingTop: i === 0 ? "0" : "15px", borderBottom: i === order.items.length - 1 ? "none" : "1px solid #333333" }}>
@@ -149,3 +149,7 @@ export default function NewOrderEmail({ order }: NewOrderEmailProps) {
     </html>
   );
 }
+`;
+
+fs.writeFileSync("c:/Users/HP Core i5/Desktop/SGB MILITARY/lib/emails/NewOrderEmail.tsx", newTemplate, "utf-8");
+console.log("Updated NewOrderEmail template");

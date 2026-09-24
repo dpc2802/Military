@@ -1,14 +1,10 @@
-/**
- * Plantilla de email enviada al CLIENTE cuando su pago en Wompi es aprobado.
- */
-
 import * as React from "react";
 import { formatCOP, formatDateBogota } from "@/lib/format";
 import type { OrderWithItems } from "@/types";
 
 interface CustomerReceiptEmailProps {
   order: OrderWithItems;
-  transactionId?: string;
+  transactionId: string;
 }
 
 export default function CustomerReceiptEmail({ order, transactionId }: CustomerReceiptEmailProps) {
@@ -18,82 +14,106 @@ export default function CustomerReceiptEmail({ order, transactionId }: CustomerR
     <html lang="es">
       <head>
         <meta charSet="utf-8" />
-        <style>{`
-          body { margin: 0; padding: 0; background-color: #0D0F0C; font-family: Arial, sans-serif; }
-          .container { max-width: 600px; margin: 0 auto; padding: 32px; background-color: #121212; border: 1px solid #2A2A2A; }
-          .logo { color: #C2B280; font-size: 24px; letter-spacing: 4px; font-weight: 700; text-transform: uppercase; margin: 0 0 16px; text-align: center; }
-          .header-title { color: #F5F5F0; font-size: 24px; font-weight: 700; margin: 0 0 8px; text-align: center; }
-          .header-sub { color: #86efac; font-size: 14px; margin: 0 0 32px; text-align: center; letter-spacing: 1px; }
-          .hr { border: none; border-top: 1px solid #2A2A2A; margin: 24px 0; }
-          .section-title { color: #C2B280; font-size: 12px; margin: 0 0 16px; letter-spacing: 2px; text-transform: uppercase; }
-          .text-main { color: #D1D5DB; font-size: 14px; line-height: 1.6; margin: 0 0 16px; }
-          .order-box { background-color: #1A1A1A; border: 1px solid #2A2A2A; padding: 20px; margin-bottom: 24px; text-align: center; }
-          .order-label { color: #9CA3AF; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; margin: 0 0 8px; }
-          .order-number { color: #F5F5F0; font-size: 28px; font-weight: 700; margin: 0; letter-spacing: 2px; }
-          .item { border-bottom: 1px solid #2A2A2A; padding-bottom: 16px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
-          .item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-          .item-name { color: #F5F5F0; font-size: 15px; margin: 0 0 4px; font-weight: 600; }
-          .item-detail { color: #9CA3AF; font-size: 13px; margin: 0; }
-          .item-price { color: #F5F5F0; font-size: 15px; margin: 0; font-weight: 600; }
-          .total-row { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; padding-top: 16px; border-top: 1px solid #3A3A3A; }
-          .total-label { color: #C2B280; font-size: 14px; font-weight: 700; letter-spacing: 1px; }
-          .total-price { color: #C2B280; font-size: 20px; font-weight: 700; }
-          .footer { color: #6B7280; font-size: 11px; text-align: center; margin: 32px 0 0; line-height: 1.5; }
-        `}</style>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
-      <body>
-        <div className="container">
-          <p className="logo">SGB MILITARY</p>
-          <h1 className="header-title">¡Gracias por tu compra, {order.customerName.split(" ")[0]}!</h1>
-          <p className="header-sub">Tu pago ha sido confirmado con éxito.</p>
-
-          <p className="text-main">
-            Hemos recibido tu pedido y ya estamos preparándolo para el envío. Te notificaremos por este mismo medio tan pronto como tu paquete vaya en camino.
-          </p>
-
-          <div className="order-box">
-            <p className="order-label">Número de Pedido</p>
-            <p className="order-number">{order.orderNumber}</p>
-          </div>
-
-          <p className="section-title">Resumen de tu pedido</p>
+      <body style={{ margin: 0, padding: "20px", backgroundColor: "#0A0A0A", fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif", color: "#EDEDED", WebkitFontSmoothing: "antialiased" }}>
+        
+        <table width="100%" cellPadding="0" cellSpacing="0" style={{ maxWidth: "600px", margin: "0 auto", backgroundColor: "#121212", border: "1px solid #333333", borderRadius: "8px", overflow: "hidden" }}>
           
-          <div style={{ backgroundColor: "#1A1A1A", border: "1px solid #2A2A2A", padding: "24px" }}>
-            {order.items.map((item, i) => (
-              <div key={i} className="item">
-                <div>
-                  <p className="item-name">{item.productName}</p>
-                  <p className="item-detail">
-                    {item.size && `Talla: ${item.size}`}
-                    {item.color && ` / Color: ${item.color}`}
-                    {` × ${item.quantity}`}
-                  </p>
-                </div>
-                <p className="item-price">{formatCOP(Number(item.subtotal))}</p>
+          {/* Header */}
+          <tr>
+            <td style={{ padding: "40px 30px", borderBottom: "1px solid #333333", backgroundColor: "#0f1410", textAlign: "center" }}>
+              <h1 style={{ margin: "0", color: "#C2B280", fontSize: "24px", letterSpacing: "3px", textTransform: "uppercase" }}>
+                SGB MILITARY
+              </h1>
+              <p style={{ margin: "12px 0 0", color: "#FFFFFF", fontSize: "16px" }}>
+                ¡Gracias por tu compra, {order.customerName.split(" ")[0]}!
+              </p>
+              <p style={{ margin: "6px 0 0", color: "#888888", fontSize: "14px" }}>
+                Hemos recibido tu pedido y estamos preparándolo para el envío.
+              </p>
+            </td>
+          </tr>
+
+          {/* Info Block */}
+          <tr>
+            <td style={{ padding: "30px" }}>
+              
+              <table width="100%" cellPadding="0" cellSpacing="0" style={{ marginBottom: "25px" }}>
+                <tr>
+                  <td align="left">
+                    <p style={{ margin: "0", color: "#888888", fontSize: "12px", textTransform: "uppercase", letterSpacing: "1px" }}>Pedido No.</p>
+                    <p style={{ margin: "4px 0 0", color: "#FFFFFF", fontSize: "18px", fontWeight: "bold" }}>{order.orderNumber}</p>
+                  </td>
+                  <td align="right">
+                    <p style={{ margin: "0", color: "#888888", fontSize: "12px", textTransform: "uppercase", letterSpacing: "1px" }}>Fecha</p>
+                    <p style={{ margin: "4px 0 0", color: "#FFFFFF", fontSize: "14px" }}>{formatDateBogota(order.createdAt)}</p>
+                  </td>
+                </tr>
+              </table>
+
+              <hr style={{ border: "none", borderTop: "1px solid #333333", margin: "0 0 25px" }} />
+
+              {/* Items List */}
+              <p style={{ margin: "0 0 15px", color: "#888888", fontSize: "12px", letterSpacing: "1px", textTransform: "uppercase" }}>
+                Tu Pedido
+              </p>
+              
+              <table width="100%" cellPadding="0" cellSpacing="0" style={{ marginBottom: "25px" }}>
+                {order.items.map((item, i) => (
+                  <tr key={i}>
+                    <td style={{ paddingBottom: "15px", borderBottom: i === order.items.length - 1 ? "none" : "1px solid #333333", paddingTop: i === 0 ? "0" : "15px" }}>
+                      <p style={{ margin: "0 0 4px", color: "#FFFFFF", fontSize: "15px", fontWeight: "bold" }}>
+                        {item.productName}
+                      </p>
+                      <p style={{ margin: "0", color: "#888888", fontSize: "13px" }}>
+                        {item.size ? `Talla: ${item.size}` : ""}
+                        {item.size && item.color ? " • " : ""}
+                        {item.color ? `Color: ${item.color}` : ""}
+                        {(item.size || item.color) ? " • " : ""}
+                        Cantidad: {item.quantity}
+                      </p>
+                    </td>
+                    <td align="right" valign="top" style={{ paddingTop: i === 0 ? "0" : "15px", borderBottom: i === order.items.length - 1 ? "none" : "1px solid #333333" }}>
+                      <p style={{ margin: "0", color: "#C2B280", fontSize: "15px", fontWeight: "bold" }}>
+                        {formatCOP(Number(item.subtotal))}
+                      </p>
+                    </td>
+                  </tr>
+                ))}
+              </table>
+
+              <table width="100%" cellPadding="0" cellSpacing="0" style={{ backgroundColor: "#1A1A1A", borderRadius: "6px", padding: "15px" }}>
+                <tr>
+                  <td align="left">
+                    <span style={{ color: "#FFFFFF", fontSize: "14px", fontWeight: "bold" }}>TOTAL PAGADO</span>
+                  </td>
+                  <td align="right">
+                    <span style={{ color: "#C2B280", fontSize: "18px", fontWeight: "bold" }}>{formatCOP(total)}</span>
+                  </td>
+                </tr>
+              </table>
+
+              <div style={{ marginTop: "30px" }}>
+                <p style={{ margin: "0 0 10px", color: "#888888", fontSize: "12px", letterSpacing: "1px", textTransform: "uppercase" }}>
+                  Datos de Envío
+                </p>
+                <p style={{ margin: "0 0 4px", color: "#FFFFFF", fontSize: "14px" }}>{order.customerName}</p>
+                <p style={{ margin: "0 0 4px", color: "#CCCCCC", fontSize: "14px" }}>{order.customerAddress}</p>
+                <p style={{ margin: "0 0 4px", color: "#CCCCCC", fontSize: "14px" }}>{order.customerCity}, {order.customerDepartment}</p>
+                <p style={{ margin: "0", color: "#CCCCCC", fontSize: "14px" }}>Tel: {order.customerPhone}</p>
               </div>
-            ))}
 
-            <div className="total-row">
-              <span className="total-label">TOTAL PAGADO</span>
-              <span className="total-price">{formatCOP(total)}</span>
-            </div>
-          </div>
+            </td>
+          </tr>
 
-          <div style={{ marginTop: "32px", backgroundColor: "#1A1A1A", border: "1px solid #2A2A2A", padding: "20px" }}>
-            <p className="section-title">Datos de Envío</p>
-            <p className="text-main" style={{ margin: 0 }}>
-              <strong>{order.customerName}</strong><br />
-              {order.customerAddress}<br />
-              {order.customerCity}<br />
-              Tel: {order.customerPhone}
-            </p>
-          </div>
+        </table>
+        
+        <p style={{ textAlign: "center", color: "#666666", fontSize: "12px", marginTop: "20px", lineHeight: "1.5" }}>
+          Recibirás otro correo cuando tu pedido sea despachado.<br/>
+          Si tienes alguna duda, responde a este correo.
+        </p>
 
-          <p className="footer">
-            Si tienes alguna duda sobre tu pedido, puedes responder a este correo o escribirnos por WhatsApp.<br />
-            © {new Date().getFullYear()} SGB Military Shop Colombia. Todos los derechos reservados.
-          </p>
-        </div>
       </body>
     </html>
   );

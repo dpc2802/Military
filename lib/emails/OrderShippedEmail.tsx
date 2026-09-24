@@ -1,8 +1,5 @@
-/**
- * Plantilla de email enviada al CLIENTE cuando su pedido ha sido marcado como "enviado".
- */
-
 import * as React from "react";
+import { formatCOP } from "@/lib/format";
 import type { OrderWithItems } from "@/types";
 
 interface OrderShippedEmailProps {
@@ -10,55 +7,91 @@ interface OrderShippedEmailProps {
 }
 
 export default function OrderShippedEmail({ order }: OrderShippedEmailProps) {
+  const total = Number(order.totalAmount);
+
   return (
     <html lang="es">
       <head>
         <meta charSet="utf-8" />
-        <style>{`
-          body { margin: 0; padding: 0; background-color: #0D0F0C; font-family: Arial, sans-serif; }
-          .container { max-width: 600px; margin: 0 auto; padding: 32px; background-color: #121212; border: 1px solid #2A2A2A; }
-          .logo { color: #C2B280; font-size: 24px; letter-spacing: 4px; font-weight: 700; text-transform: uppercase; margin: 0 0 16px; text-align: center; }
-          .header-title { color: #F5F5F0; font-size: 24px; font-weight: 700; margin: 0 0 8px; text-align: center; }
-          .header-sub { color: #60a5fa; font-size: 14px; margin: 0 0 32px; text-align: center; letter-spacing: 1px; }
-          .hr { border: none; border-top: 1px solid #2A2A2A; margin: 24px 0; }
-          .section-title { color: #C2B280; font-size: 12px; margin: 0 0 16px; letter-spacing: 2px; text-transform: uppercase; }
-          .text-main { color: #D1D5DB; font-size: 14px; line-height: 1.6; margin: 0 0 16px; }
-          .order-box { background-color: #1A1A1A; border: 1px solid #2A2A2A; padding: 20px; margin-bottom: 24px; text-align: center; }
-          .order-label { color: #9CA3AF; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; margin: 0 0 8px; }
-          .order-number { color: #F5F5F0; font-size: 28px; font-weight: 700; margin: 0; letter-spacing: 2px; }
-          .footer { color: #6B7280; font-size: 11px; text-align: center; margin: 32px 0 0; line-height: 1.5; }
-        `}</style>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
-      <body>
-        <div className="container">
-          <p className="logo">SGB MILITARY</p>
-          <h1 className="header-title">¡Buenas noticias, {order.customerName.split(" ")[0]}!</h1>
-          <p className="header-sub">Tu pedido ya va en camino hacia ti.</p>
+      <body style={{ margin: 0, padding: "20px", backgroundColor: "#0A0A0A", fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif", color: "#EDEDED", WebkitFontSmoothing: "antialiased" }}>
+        
+        <table width="100%" cellPadding="0" cellSpacing="0" style={{ maxWidth: "600px", margin: "0 auto", backgroundColor: "#121212", border: "1px solid #333333", borderRadius: "8px", overflow: "hidden" }}>
+          
+          {/* Header */}
+          <tr>
+            <td style={{ padding: "40px 30px", borderBottom: "1px solid #333333", backgroundColor: "#0f1410", textAlign: "center" }}>
+              <h1 style={{ margin: "0", color: "#C2B280", fontSize: "24px", letterSpacing: "3px", textTransform: "uppercase" }}>
+                SGB MILITARY
+              </h1>
+              <p style={{ margin: "12px 0 0", color: "#4ade80", fontSize: "16px", fontWeight: "bold" }}>
+                ¡Tu pedido va en camino! 🚚
+              </p>
+              <p style={{ margin: "6px 0 0", color: "#888888", fontSize: "14px" }}>
+                Hola {order.customerName.split(" ")[0]}, hemos despachado tu orden.
+              </p>
+            </td>
+          </tr>
 
-          <p className="text-main">
-            Hemos entregado tu paquete a la transportadora. Te enviaremos el número de guía por WhatsApp en el transcurso del día para que puedas rastrearlo en todo momento.
-          </p>
+          {/* Info Block */}
+          <tr>
+            <td style={{ padding: "30px" }}>
+              
+              <table width="100%" cellPadding="0" cellSpacing="0" style={{ marginBottom: "25px", backgroundColor: "#1A1A1A", padding: "20px", borderRadius: "6px", border: "1px solid #2A2A2A" }}>
+                <tr>
+                  <td align="center">
+                    <p style={{ margin: "0", color: "#888888", fontSize: "12px", textTransform: "uppercase", letterSpacing: "1px" }}>Pedido No.</p>
+                    <p style={{ margin: "4px 0 0", color: "#FFFFFF", fontSize: "20px", fontWeight: "bold" }}>{order.orderNumber}</p>
+                  </td>
+                </tr>
+              </table>
 
-          <div className="order-box">
-            <p className="order-label">Número de Pedido</p>
-            <p className="order-number">{order.orderNumber}</p>
-          </div>
+              <div style={{ marginBottom: "25px" }}>
+                <p style={{ margin: "0 0 10px", color: "#888888", fontSize: "12px", letterSpacing: "1px", textTransform: "uppercase" }}>
+                  Dirección de Entrega
+                </p>
+                <p style={{ margin: "0 0 4px", color: "#FFFFFF", fontSize: "14px" }}>{order.customerName}</p>
+                <p style={{ margin: "0 0 4px", color: "#CCCCCC", fontSize: "14px" }}>{order.customerAddress}</p>
+                <p style={{ margin: "0 0 4px", color: "#CCCCCC", fontSize: "14px" }}>{order.customerCity}, {order.customerDepartment}</p>
+              </div>
 
-          <div style={{ marginTop: "32px", backgroundColor: "#1A1A1A", border: "1px solid #2A2A2A", padding: "20px" }}>
-            <p className="section-title">Dirección de Entrega</p>
-            <p className="text-main" style={{ margin: 0 }}>
-              <strong>{order.customerName}</strong><br />
-              {order.customerAddress}<br />
-              {order.customerCity}<br />
-              Tel: {order.customerPhone}
-            </p>
-          </div>
+              <hr style={{ border: "none", borderTop: "1px solid #333333", margin: "0 0 25px" }} />
 
-          <p className="footer">
-            Si tienes alguna duda o necesitas cambiar algo, contáctanos cuanto antes por WhatsApp.<br />
-            © {new Date().getFullYear()} SGB Military Shop Colombia. Todos los derechos reservados.
-          </p>
-        </div>
+              {/* Items List */}
+              <p style={{ margin: "0 0 15px", color: "#888888", fontSize: "12px", letterSpacing: "1px", textTransform: "uppercase" }}>
+                Productos Enviados
+              </p>
+              
+              <table width="100%" cellPadding="0" cellSpacing="0" style={{ marginBottom: "15px" }}>
+                {order.items.map((item, i) => (
+                  <tr key={i}>
+                    <td style={{ paddingBottom: "15px", borderBottom: i === order.items.length - 1 ? "none" : "1px solid #333333", paddingTop: i === 0 ? "0" : "15px" }}>
+                      <p style={{ margin: "0 0 4px", color: "#FFFFFF", fontSize: "15px", fontWeight: "bold" }}>
+                        {item.productName}
+                      </p>
+                      <p style={{ margin: "0", color: "#888888", fontSize: "13px" }}>
+                        {item.size ? `Talla: ${item.size}` : ""}
+                        {item.size && item.color ? " • " : ""}
+                        {item.color ? `Color: ${item.color}` : ""}
+                        {(item.size || item.color) ? " • " : ""}
+                        Cantidad: {item.quantity}
+                      </p>
+                    </td>
+                  </tr>
+                ))}
+              </table>
+
+            </td>
+          </tr>
+
+        </table>
+        
+        <p style={{ textAlign: "center", color: "#666666", fontSize: "12px", marginTop: "20px", lineHeight: "1.5" }}>
+          Gracias por confiar en SGB Military.<br/>
+          Si tienes problemas con la entrega, escríbenos respondiendo a este correo.
+        </p>
+
       </body>
     </html>
   );
