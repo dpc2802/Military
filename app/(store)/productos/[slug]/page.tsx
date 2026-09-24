@@ -79,6 +79,8 @@ async function getRelatedProducts(categoryId: number, excludeSlug: string) {
   }).then((ps) => ps.filter((p) => p.slug !== excludeSlug));
 }
 
+export const dynamic = "force-dynamic";
+
 export default async function ProductPage({ params }: ProductPageProps) {
   const product = await getProduct(params.slug);
   if (!product) notFound();
