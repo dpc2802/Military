@@ -161,20 +161,83 @@ export default function CheckoutPage() {
               <form id="checkout-form" onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 <div className="space-y-1">
                   <label className="text-xs font-body uppercase tracking-widest text-muted-foreground">
-                    Nombre completo
+                    Correo Electrónico *
                   </label>
                   <input
-                    {...register("customerName")}
+                    {...register("customerEmail")}
+                    type="email"
                     className="w-full bg-background border border-border px-3 py-2 text-sm font-body focus:outline-none focus:border-primary"
-                    placeholder="Ej. Juan Pérez"
+                    placeholder="Ej. juan@gmail.com (Para enviarte la factura)"
                   />
-                  {errors.customerName && <p className="text-xs text-destructive mt-1">{errors.customerName.message}</p>}
+                  {errors.customerEmail && <p className="text-xs text-destructive mt-1">{errors.customerEmail.message}</p>}
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-1">
                     <label className="text-xs font-body uppercase tracking-widest text-muted-foreground">
-                      Teléfono / WhatsApp
+                      Nombre completo *
+                    </label>
+                    <input
+                      {...register("customerName")}
+                      className="w-full bg-background border border-border px-3 py-2 text-sm font-body focus:outline-none focus:border-primary"
+                      placeholder="Ej. Juan Pérez"
+                    />
+                    {errors.customerName && <p className="text-xs text-destructive mt-1">{errors.customerName.message}</p>}
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-xs font-body uppercase tracking-widest text-muted-foreground">
+                      Cédula (Para el envío) *
+                    </label>
+                    <input
+                      {...register("customerDni")}
+                      type="text"
+                      className="w-full bg-background border border-border px-3 py-2 text-sm font-body focus:outline-none focus:border-primary"
+                      placeholder="Ej. 1010123456"
+                    />
+                    {errors.customerDni && <p className="text-xs text-destructive mt-1">{errors.customerDni.message}</p>}
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <label className="text-xs font-body uppercase tracking-widest text-muted-foreground">
+                      Departamento *
+                    </label>
+                    <input
+                      {...register("customerDepartment")}
+                      className="w-full bg-background border border-border px-3 py-2 text-sm font-body focus:outline-none focus:border-primary"
+                      placeholder="Ej. Antioquia"
+                    />
+                    {errors.customerDepartment && <p className="text-xs text-destructive mt-1">{errors.customerDepartment.message}</p>}
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-xs font-body uppercase tracking-widest text-muted-foreground">
+                      Ciudad *
+                    </label>
+                    <input
+                      {...register("customerCity")}
+                      className="w-full bg-background border border-border px-3 py-2 text-sm font-body focus:outline-none focus:border-primary"
+                      placeholder="Ej. Medellín"
+                    />
+                    {errors.customerCity && <p className="text-xs text-destructive mt-1">{errors.customerCity.message}</p>}
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <label className="text-xs font-body uppercase tracking-widest text-muted-foreground">
+                      Dirección exacta *
+                    </label>
+                    <input
+                      {...register("customerAddress")}
+                      className="w-full bg-background border border-border px-3 py-2 text-sm font-body focus:outline-none focus:border-primary"
+                      placeholder="Ej. Calle 123 # 45-67 Apto 8"
+                    />
+                    {errors.customerAddress && <p className="text-xs text-destructive mt-1">{errors.customerAddress.message}</p>}
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-xs font-body uppercase tracking-widest text-muted-foreground">
+                      Teléfono / WhatsApp *
                     </label>
                     <input
                       {...register("customerPhone")}
@@ -184,29 +247,6 @@ export default function CheckoutPage() {
                     />
                     {errors.customerPhone && <p className="text-xs text-destructive mt-1">{errors.customerPhone.message}</p>}
                   </div>
-                  <div className="space-y-1">
-                    <label className="text-xs font-body uppercase tracking-widest text-muted-foreground">
-                      Ciudad
-                    </label>
-                    <input
-                      {...register("customerCity")}
-                      className="w-full bg-background border border-border px-3 py-2 text-sm font-body focus:outline-none focus:border-primary"
-                      placeholder="Ej. Bogotá"
-                    />
-                    {errors.customerCity && <p className="text-xs text-destructive mt-1">{errors.customerCity.message}</p>}
-                  </div>
-                </div>
-
-                <div className="space-y-1">
-                  <label className="text-xs font-body uppercase tracking-widest text-muted-foreground">
-                    Dirección exacta
-                  </label>
-                  <input
-                    {...register("customerAddress")}
-                    className="w-full bg-background border border-border px-3 py-2 text-sm font-body focus:outline-none focus:border-primary"
-                    placeholder="Ej. Calle 123 # 45-67 Apto 8"
-                  />
-                  {errors.customerAddress && <p className="text-xs text-destructive mt-1">{errors.customerAddress.message}</p>}
                 </div>
 
                 <div className="space-y-1">

@@ -118,8 +118,16 @@ export default async function AdminOrderDetailPage({ params }: { params: { id: s
             </h2>
             <div className="space-y-3 text-sm font-body">
               <div>
-                <p className="text-xs text-muted-foreground uppercase tracking-widest">Ciudad</p>
-                <p>{order.customerCity}</p>
+                <p className="text-xs text-muted-foreground uppercase tracking-widest">Cédula</p>
+                <p>{order.customerDni}</p>
+              </div>
+              <div>
+                <p className="text-xs text-muted-foreground uppercase tracking-widest">Correo</p>
+                <p>{order.customerEmail}</p>
+              </div>
+              <div>
+                <p className="text-xs text-muted-foreground uppercase tracking-widest">Ciudad/Depto</p>
+                <p>{order.customerCity}, {order.customerDepartment}</p>
               </div>
               <div>
                 <p className="text-xs text-muted-foreground uppercase tracking-widest">Dirección</p>

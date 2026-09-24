@@ -78,8 +78,10 @@ export const orders = pgTable("orders", {
   orderNumber: varchar("order_number", { length: 16 }).notNull().unique(),
   // Datos del comprador — sin cuenta de usuario
   customerName: varchar("customer_name", { length: 256 }).notNull(),
+  customerDni: varchar("customer_dni", { length: 32 }).notNull().default(""),
   customerEmail: varchar("customer_email", { length: 256 }).notNull().default(""),
   customerPhone: varchar("customer_phone", { length: 32 }).notNull(),
+  customerDepartment: varchar("customer_department", { length: 128 }).notNull().default(""),
   customerCity: varchar("customer_city", { length: 128 }).notNull(),
   customerAddress: text("customer_address").notNull(),
   customerNotes: text("customer_notes"),
