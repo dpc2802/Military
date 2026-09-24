@@ -1,4 +1,4 @@
-﻿import { pgTable, text, integer, boolean, timestamp, serial, varchar, decimal, jsonb } from "drizzle-orm/pg-core";
+﻿import { pgTable, text, json, integer, boolean, timestamp, serial, varchar, decimal, jsonb } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
 // ─── ADMIN USERS ────────────────────────────────────────────────────────────
@@ -201,3 +201,14 @@ export type ProductImage = {
 };
 
 
+
+
+// ─── WEBHOOK LOGS (Auditoría de Pagos) ───────────────────────────────────────
+export const paymentEvents = pgTable("payment_events", {
+  id: serial("id").primaryKey(),
+  transactionId: varchar("transaction_id", { length: 128 }).notNull(),
+  eventType: varchar("event_type", { length: 64 }).notNull(),
+  payload: json("payload").notNull(),
+  processedAt: timestamp("processed_at"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
