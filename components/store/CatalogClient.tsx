@@ -41,6 +41,15 @@ export default function CatalogClient({ categories, initialFilters }: CatalogCli
 
   // States
   const [busqueda, setBusqueda] = useState(initialFilters.busqueda);
+  // Sincronizar búsqueda global desde la URL
+  const searchParams = useSearchParams();
+  useEffect(() => {
+    const q = searchParams.get("busqueda");
+    if (q !== null && q !== busqueda) {
+      setBusqueda(q);
+    }
+  }, [searchParams]);
+
   const [categoria, setCategoria] = useState(initialFilters.categoria);
   const [talla, setTalla] = useState(initialFilters.talla);
   const [minPrecio, setMinPrecio] = useState(initialFilters.minPrecio);
