@@ -77,12 +77,12 @@ export async function POST(request: NextRequest) {
     }
 
     // 2. Calcular total real desde los precios
-    let totalAmount = 0;
+    let subtotalAmount = 0;
     const finalItems = items.map((item) => {
       const dbVariant = dbVariants.find((v) => v.id === item.variantId)!;
       const realPrice = Number(dbVariant.priceOverride ?? dbVariant.product.price);
       const subtotal = realPrice * item.quantity;
-      totalAmount += subtotal;
+      subtotalAmount += subtotal;
       
       return {
         ...item,
@@ -90,6 +90,9 @@ export async function POST(request: NextRequest) {
         subtotal,
       };
     });
+
+    const shippingCost = subtotalAmount >= 300000 ? 0 : 25000;
+    const totalAmount = subtotalAmount + shippingCost;
 
     // 3. Crear Pedido y Reservar Stock
     const [newOrder] = await db.insert(orders).values({

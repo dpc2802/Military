@@ -19,7 +19,7 @@ export const SITE_URL =
 
 /** Email del administrador para notificaciones */
 export const ADMIN_EMAIL =
-  process.env.NEXT_PUBLIC_ADMIN_EMAIL ?? "admin@sgbmilitary.com";
+  process.env.NEXT_PUBLIC_ADMIN_EMAIL ?? "Sgbmilitaryshop@gmail.com";
 
 /** Máximo de imágenes por producto */
 export const MAX_PRODUCT_IMAGES = 6;

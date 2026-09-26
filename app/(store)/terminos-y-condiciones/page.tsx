@@ -42,7 +42,7 @@ export default function TerminosPage() {
 
         <h2>5. Cambios y Devoluciones (Derecho de Retracto)</h2>
         <p>
-          De acuerdo con el Estatuto del Consumidor de Colombia (Ley 1480 de 2011), el usuario tiene derecho a retractarse de la compra dentro de los primeros cinco (5) dÃ­as hÃ¡biles siguientes a la entrega del producto. El producto debe devolverse en perfecto estado, sin signos de uso y con sus etiquetas originales. Los costos de envÃ­o por devoluciÃ³n serÃ¡n asumidos por el comprador.
+          De acuerdo con el Estatuto del Consumidor de Colombia (Ley 1480 de 2011), el usuario tiene derecho a retractarse de la compra dentro de los primeros cinco (5) dÃ­as hÃ¡biles siguientes a la entrega del producto. El producto debe devolverse en perfecto estado, sin signos de uso y con sus etiquetas originales. Si existe alguna novedad o defecto real de fábrica en el producto, el vendedor (SGB Military Shop) asume los gastos de envío.
         </p>
 
         <h2>6. Modificaciones</h2>

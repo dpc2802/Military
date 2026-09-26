@@ -14,7 +14,7 @@ export default function PoliticaEnviosPage() {
         
         <h2>1. Cobertura</h2>
         <p>
-          Realizamos envÃ­os a nivel nacional (todo el territorio colombiano) a travÃ©s de transportadoras aliadas reconocidas (Inter RapidÃ­simo, Servientrega, EnvÃ­a, Coordinadora, etc.).
+          Realizamos despachos desde Medellín a nivel nacional a través de transportadoras aliadas reconocidas (Servientrega, Inter Rapidísimo).
         </p>
 
         <h2>2. Tiempos de Despacho y Entrega</h2>
@@ -22,8 +22,8 @@ export default function PoliticaEnviosPage() {
           Los pedidos son procesados y despachados en un mÃ¡ximo de <strong>24 a 48 horas hÃ¡biles</strong> una vez confirmado el pago.
         </p>
         <ul>
-          <li><strong>Ciudades Principales:</strong> El tiempo estimado de entrega es de 1 a 3 dÃ­as hÃ¡biles despuÃ©s del despacho.</li>
-          <li><strong>Poblaciones Lejanas o Trayectos Especiales:</strong> El tiempo estimado puede variar entre 3 a 8 dÃ­as hÃ¡biles dependiendo de la logÃ­stica de la transportadora.</li>
+          <li><strong>Ciudades Principales:</strong> El tiempo estimado de llegada del envío es de 6 días hábiles aproximadamente.</li>
+          <li><strong>Poblaciones Lejanas o Trayectos Especiales:</strong> En trayectos especiales, el tiempo puede extenderse dependiendo de la logística de la transportadora.</li>
         </ul>
         <p><em>Nota: Los domingos y dÃ­as festivos no cuentan como dÃ­as hÃ¡biles para despachos ni trÃ¡nsito logÃ­stico.</em></p>
 
@@ -40,6 +40,10 @@ export default function PoliticaEnviosPage() {
         <h2>5. Entregas Fallidas</h2>
         <p>
           Si la transportadora intenta entregar el paquete y no hay quiÃ©n lo reciba en la direcciÃ³n indicada, usualmente realizarÃ¡n un segundo intento. Si el paquete es devuelto a nuestras bodegas por errores en la direcciÃ³n suministrada por el cliente o por ausencia reiterada, el cliente deberÃ¡ asumir el costo del nuevo envÃ­o.
+        </p>
+      <h2>6. Costos de Envío</h2>
+        <p>
+          Manejamos una tarifa estándar de envío de <strong>$25.000 COP</strong> a nivel nacional. Sin embargo, para compras iguales o superiores a <strong>$300.000 COP</strong>, ¡el envío es totalmente <strong>GRATIS</strong>!
         </p>
       </div>
     </div>

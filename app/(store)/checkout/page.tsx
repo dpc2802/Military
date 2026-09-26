@@ -33,6 +33,9 @@ type CheckoutForm = z.infer<typeof checkoutFormSchema>;
 export default function CheckoutPage() {
   const router = useRouter();
   const { items, totalPrice, clearCart } = useCartStore();
+  const subtotal = totalPrice();
+  const shippingCost = subtotal >= 300000 ? 0 : 25000;
+  const finalTotal = subtotal + shippingCost;
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const {

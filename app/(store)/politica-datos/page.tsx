@@ -15,7 +15,7 @@ export default function PoliticaDatosPage() {
         
         <h2>1. Marco Legal</h2>
         <p>
-          En estricto cumplimiento de lo dispuesto por la Ley Estatutaria 1581 de 2012 y el Decreto Reglamentario 1377 de 2013 de la RepÃºblica de Colombia, <strong>[NOMBRE DE LA EMPRESA / TU NOMBRE]</strong> (en adelante "SGB Military Shop"), garantiza el adecuado tratamiento, privacidad y seguridad de los datos personales de sus clientes.
+          En estricto cumplimiento de lo dispuesto por la Ley Estatutaria 1581 de 2012 y el Decreto Reglamentario 1377 de 2013 de la RepÃºblica de Colombia, <strong>SGB MILITARY SHOP (NIT 1000412101)</strong> (en adelante "SGB Military Shop"), garantiza el adecuado tratamiento, privacidad y seguridad de los datos personales de sus clientes.
         </p>
 
         <h2>2. InformaciÃ³n Recolectada</h2>
@@ -53,8 +53,8 @@ export default function PoliticaDatosPage() {
           Para ejercer tus derechos de Habeas Data, puedes comunicarte a travÃ©s de nuestros canales oficiales:
         </p>
         <ul>
-          <li><strong>WhatsApp:</strong> [NÃšMERO DE WHATSAPP]</li>
-          <li><strong>Correo ElectrÃ³nico:</strong> [CORREO ELECTRÃ“NICO OFICIAL]</li>
+          <li><strong>WhatsApp:</strong> 3226133232</li>
+          <li><strong>Correo ElectrÃ³nico:</strong> Sgbmilitaryshop@gmail.com</li>
         </ul>
       </div>
     </div>

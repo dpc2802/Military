@@ -57,8 +57,7 @@ export default function Footer() {
             </div>
             
             <p className="text-[13px] text-[#9A9A94] font-body leading-relaxed max-w-sm">
-              Especialistas en equipo táctico y artículos militares para uso civil. 
-              Garantizamos la mejor calidad para tus misiones diarias.
+              Diseñamos y fabricamos equipo y artículos militares inspirados en las Fuerzas Militares de Colombia, creados a partir de las exigencias reales del terreno.
             </p>
 
             {/* Badge Visual */}
@@ -143,13 +142,10 @@ export default function Footer() {
               Síguenos
             </h3>
             <div className="flex gap-4">
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Síguenos en Instagram" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[#F5F5F0] hover:bg-accent hover:text-black hover:border-accent transition-all">
+              <a href="https://www.instagram.com/sgb_col_of" target="_blank" rel="noopener noreferrer" aria-label="Síguenos en Instagram" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[#F5F5F0] hover:bg-accent hover:text-black hover:border-accent transition-all">
                 <Instagram className="w-4 h-4" />
               </a>
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Síguenos en Facebook" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[#F5F5F0] hover:bg-accent hover:text-black hover:border-accent transition-all">
-                <Facebook className="w-4 h-4" />
-              </a>
-              <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" aria-label="Síguenos en TikTok" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[#F5F5F0] hover:bg-accent hover:text-black hover:border-accent transition-all">
+              <a href="https://www.tiktok.com/@sgb_militar_shop" target="_blank" rel="noopener noreferrer" aria-label="Síguenos en TikTok" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[#F5F5F0] hover:bg-accent hover:text-black hover:border-accent transition-all">
                 {/* TikTok SVG Icon */}
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/>
