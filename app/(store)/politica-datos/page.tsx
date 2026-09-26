@@ -1,61 +1,97 @@
 import { Metadata } from "next";
+import { ShieldCheck, Lock, FileText, Database, Phone } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "PolÃ­tica de Tratamiento de Datos | SGB Military",
+  title: "Política de Tratamiento de Datos | SGB Military",
 };
 
 export default function PoliticaDatosPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-12 md:py-20">
-      <h1 className="font-heading text-3xl md:text-4xl uppercase tracking-widest text-foreground mb-8">
-        PolÃ­tica de Tratamiento de Datos
-      </h1>
-      <div className="prose prose-invert prose-p:font-body prose-h2:font-heading prose-h2:tracking-widest prose-h2:uppercase max-w-none text-muted-foreground">
-        <p className="text-sm italic mb-8">Ãšltima actualizaciÃ³n: Septiembre 2026</p>
+      <div className="flex items-center gap-4 mb-8 border-b border-white/10 pb-6">
+        <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center border border-accent/20">
+          <ShieldCheck className="w-6 h-6 text-accent" />
+        </div>
+        <div>
+          <h1 className="font-heading text-2xl md:text-4xl uppercase tracking-widest text-foreground">
+            Tratamiento de Datos
+          </h1>
+          <p className="text-xs text-muted-foreground mt-2 font-body uppercase tracking-wider">
+            Última actualización: Septiembre 2026
+          </p>
+        </div>
+      </div>
+
+      <div className="space-y-8 font-body text-sm text-muted-foreground leading-relaxed">
         
-        <h2>1. Marco Legal</h2>
-        <p>
-          En estricto cumplimiento de lo dispuesto por la Ley Estatutaria 1581 de 2012 y el Decreto Reglamentario 1377 de 2013 de la RepÃºblica de Colombia, <strong>SGB MILITARY SHOP (NIT 1000412101)</strong> (en adelante "SGB Military Shop"), garantiza el adecuado tratamiento, privacidad y seguridad de los datos personales de sus clientes.
-        </p>
+        <section className="bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 hover:border-accent/30 transition-colors">
+          <div className="flex items-center gap-3 mb-4">
+            <FileText className="w-5 h-5 text-accent" />
+            <h2 className="text-lg font-heading tracking-widest uppercase text-foreground">1. Marco Legal</h2>
+          </div>
+          <p>
+            En estricto cumplimiento de lo dispuesto por la Ley Estatutaria 1581 de 2012 y el Decreto Reglamentario 1377 de 2013 de la República de Colombia, <strong>SGB MILITARY SHOP (NIT 1000412101)</strong> (en adelante "SGB Military Shop"), garantiza el adecuado tratamiento, privacidad y seguridad de los datos personales de sus clientes.
+          </p>
+        </section>
 
-        <h2>2. InformaciÃ³n Recolectada</h2>
-        <p>
-          Para procesar tus pedidos de manera exitosa, recolectamos: Nombre completo, nÃºmero de cÃ©dula/NIT, nÃºmero de telÃ©fono (WhatsApp), correo electrÃ³nico, ciudad y direcciÃ³n de envÃ­o.
-        </p>
-        <p>
-          <strong>Importante sobre pagos:</strong> SGB Military Shop <strong>NO almacena datos financieros, tarjetas de crÃ©dito ni contraseÃ±as bancarias</strong>. Todos los pagos en lÃ­nea son procesados a travÃ©s de la pasarela segura <strong>Wompi (Grupo Bancolombia)</strong>, la cual cuenta con sus propios estÃ¡ndares de encriptaciÃ³n y certificaciÃ³n PCI-DSS.
-        </p>
+        <section className="bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 hover:border-accent/30 transition-colors">
+          <div className="flex items-center gap-3 mb-4">
+            <Database className="w-5 h-5 text-accent" />
+            <h2 className="text-lg font-heading tracking-widest uppercase text-foreground">2. Información Recolectada</h2>
+          </div>
+          <p className="mb-4">
+            Para procesar tus pedidos de manera exitosa, recolectamos: Nombre completo, número de cédula/NIT, número de teléfono (WhatsApp), correo electrónico, ciudad y dirección de envío.
+          </p>
+          <div className="bg-black/50 border border-accent/20 rounded-xl p-4 flex gap-3 items-start">
+            <Lock className="w-5 h-5 text-accent shrink-0 mt-0.5" />
+            <p className="text-xs text-[#9A9A94]">
+              <strong className="text-white">Importante sobre pagos:</strong> SGB Military Shop <strong>NO almacena datos financieros, tarjetas de crédito ni contraseñas bancarias</strong>. Todos los pagos en línea son procesados a través de la pasarela segura <strong>Wompi (Grupo Bancolombia)</strong>, la cual cuenta con sus propios estándares de encriptación y certificación PCI-DSS.
+            </p>
+          </div>
+        </section>
 
-        <h2>3. Finalidad del Tratamiento</h2>
-        <p>
-          Los datos personales suministrados son utilizados exclusivamente para:
-        </p>
-        <ul>
-          <li>Procesar, facturar, despachar y entregar los pedidos realizados en la tienda.</li>
-          <li>Enviar correos electrÃ³nicos transaccionales (confirmaciÃ³n de pago y guÃ­a de rastreo).</li>
-          <li>Contactarte vÃ­a WhatsApp en caso de presentarse novedades con el envÃ­o.</li>
-          <li>Cumplir con obligaciones tributarias, legales y contables.</li>
-          <li>Manejo de garantÃ­as, devoluciones y servicio al cliente.</li>
-        </ul>
+        <section className="bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 hover:border-accent/30 transition-colors">
+          <div className="flex items-center gap-3 mb-4">
+            <ShieldCheck className="w-5 h-5 text-accent" />
+            <h2 className="text-lg font-heading tracking-widest uppercase text-foreground">3. Finalidad del Tratamiento</h2>
+          </div>
+          <p className="mb-3">Los datos personales suministrados son utilizados exclusivamente para:</p>
+          <ul className="list-none space-y-2 pl-2">
+            {[
+              "Procesar, facturar, despachar y entregar los pedidos realizados en la tienda.",
+              "Enviar correos electrónicos transaccionales (confirmación de pago y guía de rastreo).",
+              "Contactarte vía WhatsApp en caso de presentarse novedades con el envío.",
+              "Cumplir con obligaciones tributarias, legales y contables.",
+              "Manejo de garantías, devoluciones y servicio al cliente."
+            ].map((item, i) => (
+              <li key={i} className="flex gap-2 items-start">
+                <span className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 shrink-0" />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
 
-        <h2>4. Derechos de los Titulares</h2>
-        <p>
-          Como titular de los datos personales, tienes derecho a:
-        </p>
-        <ul>
-          <li>Conocer, actualizar y rectificar tus datos personales.</li>
-          <li>Solicitar prueba de la autorizaciÃ³n otorgada.</li>
-          <li>Revocar la autorizaciÃ³n y/o solicitar la supresiÃ³n del dato cuando en el tratamiento no se respeten los principios, derechos y garantÃ­as constitucionales y legales.</li>
-        </ul>
+        <section className="bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 hover:border-accent/30 transition-colors">
+          <div className="flex items-center gap-3 mb-4">
+            <Phone className="w-5 h-5 text-accent" />
+            <h2 className="text-lg font-heading tracking-widest uppercase text-foreground">4. Derechos y Canales de Atención</h2>
+          </div>
+          <p className="mb-4">
+            Como titular, tienes derecho a conocer, actualizar, rectificar tus datos o revocar la autorización. Para ejercer tus derechos de Habeas Data, comunícate a través de nuestros canales oficiales:
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-black/30 border border-white/5 p-4 rounded-xl flex flex-col items-center justify-center text-center">
+              <span className="text-xs uppercase tracking-widest text-[#9A9A94] mb-1">WhatsApp Oficial</span>
+              <strong className="text-white">322 613 3232</strong>
+            </div>
+            <div className="bg-black/30 border border-white/5 p-4 rounded-xl flex flex-col items-center justify-center text-center">
+              <span className="text-xs uppercase tracking-widest text-[#9A9A94] mb-1">Correo Electrónico</span>
+              <strong className="text-white">Sgbmilitaryshop@gmail.com</strong>
+            </div>
+          </div>
+        </section>
 
-        <h2>5. Canales de AtenciÃ³n</h2>
-        <p>
-          Para ejercer tus derechos de Habeas Data, puedes comunicarte a travÃ©s de nuestros canales oficiales:
-        </p>
-        <ul>
-          <li><strong>WhatsApp:</strong> 3226133232</li>
-          <li><strong>Correo ElectrÃ³nico:</strong> Sgbmilitaryshop@gmail.com</li>
-        </ul>
       </div>
     </div>
   );
