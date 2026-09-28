@@ -112,7 +112,7 @@ export async function POST(request: NextRequest) {
       }
 
       const pct = burned[0].discountPercentage;
-      discountAmount = pct * 1000;
+      discountAmount = Math.round(subtotalAmount * (pct / 100));
       validatedCouponCode = burned[0].code;
     }
 

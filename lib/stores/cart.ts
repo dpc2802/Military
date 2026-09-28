@@ -65,7 +65,7 @@ export const useCartStore = create<CartState>()(
         const { coupon, totalPrice } = get();
         if (!coupon) return 0;
         // En vez de porcentaje, los cupones de "10", "20", "30" significan 10.000, 20.000 y 30.000 pesos
-        return coupon.discountPercentage * 1000;
+        return Math.round(totalPrice() * (coupon.discountPercentage / 100));
       },
 
       finalTotal: () => {

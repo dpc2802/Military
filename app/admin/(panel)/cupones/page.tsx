@@ -13,9 +13,9 @@ type Coupon = {
 };
 
 const TIERS = [
-  { percentage: 10, label: "$10.000 OFF", color: "text-blue-400 border-blue-400/30 bg-blue-400/10", btnColor: "bg-blue-500 hover:bg-blue-400" },
-  { percentage: 20, label: "$20.000 OFF", color: "text-yellow-400 border-yellow-400/30 bg-yellow-400/10", btnColor: "bg-yellow-500 hover:bg-yellow-400" },
-  { percentage: 30, label: "$30.000 OFF", color: "text-red-400 border-red-400/30 bg-red-400/10", btnColor: "bg-red-500 hover:bg-red-400" },
+  { percentage: 10, label: "10% OFF", color: "text-blue-400 border-blue-400/30 bg-blue-400/10", btnColor: "bg-blue-500 hover:bg-blue-400" },
+  { percentage: 20, label: "20% OFF", color: "text-yellow-400 border-yellow-400/30 bg-yellow-400/10", btnColor: "bg-yellow-500 hover:bg-yellow-400" },
+  { percentage: 30, label: "30% OFF", color: "text-red-400 border-red-400/30 bg-red-400/10", btnColor: "bg-red-500 hover:bg-red-400" },
 ];
 
 export default function CuponesPage() {
@@ -131,7 +131,7 @@ export default function CuponesPage() {
               <div key={c.id} className="flex items-center justify-between px-4 py-3 hover:bg-white/5 transition-colors">
                 <div className="flex items-center gap-3">
                   <span className="font-heading text-white tracking-widest text-sm">{c.code}</span>
-                  <span className="text-[10px] bg-accent/20 text-accent px-2 py-0.5 rounded-full font-heading uppercase">${c.discountPercentage}.000 OFF</span>
+                  <span className="text-[10px] bg-accent/20 text-accent px-2 py-0.5 rounded-full font-heading uppercase">{c.discountPercentage}% OFF</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="text-[10px] text-muted-foreground font-body hidden md:block">
@@ -159,7 +159,7 @@ export default function CuponesPage() {
                 <div className="flex items-center gap-3">
                   <Lock className="w-3.5 h-3.5 text-muted-foreground" />
                   <span className="font-heading text-muted-foreground tracking-widest text-sm line-through">{c.code}</span>
-                  <span className="text-[10px] bg-white/5 text-muted-foreground px-2 py-0.5 rounded-full font-heading uppercase">${c.discountPercentage}.000 OFF</span>
+                  <span className="text-[10px] bg-white/5 text-muted-foreground px-2 py-0.5 rounded-full font-heading uppercase">{c.discountPercentage}% OFF</span>
                 </div>
                 <span className="text-[10px] text-muted-foreground font-body">
                   Usado {c.usedAt ? new Date(c.usedAt).toLocaleDateString("es-CO") : ""}
