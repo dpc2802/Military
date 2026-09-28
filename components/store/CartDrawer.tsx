@@ -315,7 +315,7 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
                   
                   {coupon ? (
                     <div className="flex justify-between items-center text-[13px] font-body">
-                      <span className="text-accent flex items-center gap-1">🎟️ {coupon.code} (-{coupon.discountPercentage}%)</span>
+                      <span className="text-accent flex items-center gap-1">🎟️ {coupon.code} (-${coupon.discountPercentage}.000)</span>
                       <div className="flex items-center gap-2">
                         <span className="text-accent font-heading">-{formatCOP(discountAmount())}</span>
                         <button onClick={removeCoupon} className="text-muted-foreground hover:text-destructive text-xs">✕</button>
