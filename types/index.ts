@@ -53,14 +53,24 @@ export type CartItem = {
   imageAlt: string;
 };
 
+export type AppliedCoupon = {
+  code: string;
+  discountPercentage: number;
+};
+
 export type CartState = {
   items: CartItem[];
+  coupon: AppliedCoupon | null;
   addItem: (item: Omit<CartItem, "quantity"> & { quantity?: number }) => void;
   removeItem: (variantId: number) => void;
   updateQuantity: (variantId: number, quantity: number) => void;
   clearCart: () => void;
+  applyCoupon: (coupon: AppliedCoupon) => void;
+  removeCoupon: () => void;
   totalItems: () => number;
   totalPrice: () => number;
+  discountAmount: () => number;
+  finalTotal: () => number;
 };
 
 // ─── ESTADOS DE ORDEN ────────────────────────────────────────────────────────

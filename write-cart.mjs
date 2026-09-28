@@ -1,4 +1,5 @@
-import { create } from "zustand";
+﻿import fs from "fs";
+const content = `import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import type { CartState, CartItem, AppliedCoupon } from "@/types";
 
@@ -79,4 +80,6 @@ export const useCartStore = create<CartState>()(
       storage: createJSONStorage(() => localStorage),
     }
   )
-);
+);`;
+fs.writeFileSync("c:/Users/HP Core i5/Desktop/SGB MILITARY/lib/stores/cart.ts", content, "utf-8");
+console.log("cart.ts correctly written");
