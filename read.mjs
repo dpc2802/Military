@@ -1,4 +1,5 @@
 ﻿import fs from "fs";
-const p = "c:/Users/HP Core i5/Desktop/SGB MILITARY/lib/format.ts";
+const p = "c:/Users/HP Core i5/Desktop/SGB MILITARY/app/api/checkout/route.ts";
 let c = fs.readFileSync(p, "utf-8");
-console.log(c);
+const start = c.indexOf("const totalAmount");
+console.log(c.substring(start, start + 3000));

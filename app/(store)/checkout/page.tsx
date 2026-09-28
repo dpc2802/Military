@@ -347,15 +347,21 @@ export default function CheckoutPage() {
               <div className="border-t border-border pt-4 space-y-3 mb-6">
                 <div className="flex justify-between items-center text-sm font-body text-muted-foreground">
                   <span>Subtotal</span>
-                  <span>{formatCOP(totalPrice())}</span>
+                  <span>{formatCOP(subtotal)}</span>
                 </div>
+                {coupon && (
+                  <div className="flex justify-between items-center text-sm font-body text-accent">
+                    <span>🎟️ Cupón ({coupon.discountPercentage}%)</span>
+                    <span>-{formatCOP(discountAmount)}</span>
+                  </div>
+                )}
                 <div className="flex justify-between items-center text-sm font-body text-muted-foreground">
                   <span>Envío</span>
-                  <span>Por calcular</span>
+                  <span>{shippingCost === 0 ? "Gratis" : formatCOP(shippingCost)}</span>
                 </div>
                 <div className="flex justify-between items-center pt-2 border-t border-border mt-2">
                   <span className="text-base font-body tracking-wider uppercase text-foreground">Total</span>
-                  <span className="text-xl font-heading text-accent">{formatCOP(totalPrice())}</span>
+                  <span className="text-xl font-heading text-accent">{formatCOP(finalTotal)}</span>
                 </div>
               </div>
 
