@@ -1,5 +1,5 @@
 ﻿import fs from "fs";
-const p = "c:/Users/HP Core i5/Desktop/SGB MILITARY/app/api/checkout/route.ts";
-let c = fs.readFileSync(p, "utf-8");
-const start = c.indexOf("const totalAmount");
-console.log(c.substring(start, start + 3000));
+const p1 = "c:/Users/HP Core i5/Desktop/SGB MILITARY/app/admin/(panel)/page.tsx";
+let c = fs.readFileSync(p1, "utf-8");
+const start = c.indexOf("{/* ── KPI CARDS ── */}");
+console.log(c.substring(start, start + 1200));

@@ -81,28 +81,7 @@ export default async function AdminDashboardPage() {
         </div>
       </div>
 
-      {/* ── KPI CARDS ── */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6">
-        <StatCard
-          icon={<ShoppingBag className="w-5 h-5 text-accent" />}
-          label="Pedidos Confirmados"
-          value={String(monthStats?.totalOrders ?? 0)}
-          subtitle="Este mes"
-        />
-        <StatCard
-          icon={<TrendingUp className="w-5 h-5 text-accent" />}
-          label="Ingresos Mensuales"
-          value={formatCOP(Number(monthStats?.totalRevenue ?? 0))}
-          subtitle="Confirmados"
-        />
-        <StatCard
-          icon={<AlertTriangle className={`w-5 h-5 ${Number(pendingStats?.count) > 0 ? "text-destructive" : "text-[#9A9A94]"}`} />}
-          label="Pendientes WhatsApp"
-          value={String(pendingStats?.count ?? 0)}
-          urgent={Number(pendingStats?.count) > 0}
-          subtitle="Requieren acción"
-        />
-      </div>
+            <StatsPanel />
 
       {/* ── GRIDS PRINCIPALES ── */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
