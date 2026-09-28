@@ -70,9 +70,7 @@ export const useCartStore = create<CartState>()(
 
       finalTotal: () => {
         const { totalPrice, discountAmount } = get();
-        const subtotal = totalPrice();
-        const shipping = subtotal >= SHIPPING_FREE_THRESHOLD ? 0 : SHIPPING_FLAT;
-        return subtotal + shipping - discountAmount();
+        return totalPrice() - discountAmount();
       },
     }),
     {

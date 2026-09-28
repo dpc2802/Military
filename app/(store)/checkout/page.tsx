@@ -38,7 +38,7 @@ export default function CheckoutPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const shippingCost = subtotal >= 300000 ? 0 : 25000;
   const discountAmount = getDiscountAmount();
-  const finalTotal = getFinalTotal();
+  const finalTotal = getFinalTotal() + shippingCost;
 
 
   const {

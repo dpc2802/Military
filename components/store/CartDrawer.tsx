@@ -273,31 +273,6 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
                     </AnimatePresence>
                   </div>
 
-                  {/* Upsell Relacionados */}
-                  <div className="px-6 py-8 border-t border-white/5 bg-[#111]">
-                    <h4 className="text-[11px] font-heading uppercase tracking-widest text-[#F5F5F0] mb-4">
-                      También te puede interesar
-                    </h4>
-                    <div className="flex gap-4 overflow-x-auto snap-x pb-4 scrollbar-hide">
-                      {/* Fake Upsell Items */}
-                      <div className="w-40 flex-shrink-0 snap-start bg-background border border-white/5 p-3">
-                        <div className="aspect-square bg-white/5 mb-3 relative flex items-center justify-center">
-                           <Image src="/prod-gloves.png" alt="Guantes" fill className="object-cover p-2" />
-                        </div>
-                        <p className="text-[10px] font-heading uppercase text-foreground truncate mb-1">Guantes de asalto</p>
-                        <p className="text-[11px] text-accent font-heading mb-2">$45.000</p>
-                        <button onClick={onClose} className="w-full text-center border border-white/10 text-[9px] font-heading uppercase py-1.5 hover:border-accent">Ver</button>
-                      </div>
-                      <div className="w-40 flex-shrink-0 snap-start bg-background border border-white/5 p-3">
-                        <div className="aspect-square bg-white/5 mb-3 relative flex items-center justify-center">
-                           <Image src="/logo.png" alt="Parche" fill className="object-contain p-4 brightness-0 invert opacity-50" />
-                        </div>
-                        <p className="text-[10px] font-heading uppercase text-foreground truncate mb-1">Parche SGB Force</p>
-                        <p className="text-[11px] text-accent font-heading mb-2">$15.000</p>
-                        <button onClick={onClose} className="w-full text-center border border-white/10 text-[9px] font-heading uppercase py-1.5 hover:border-accent">Ver</button>
-                      </div>
-                    </div>
-                  </div>
                 </>
               )}
             </div>
@@ -346,7 +321,7 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
 
                   <div className="flex justify-between items-center text-[13px] font-body text-[#9A9A94]">
                     <span className="flex items-center gap-1"><Info className="w-3.5 h-3.5"/> Envío</span>
-                    <span>{totalPrice() >= 300000 ? "Gratis" : formatCOP(25000)}</span>
+                    <span>{totalPrice() >= 300000 ? "Gratis" : "Calculado al finalizar"}</span>
                   </div>
                   <div className="h-px bg-white/10 my-2" />
                   <div className="flex justify-between items-end">
