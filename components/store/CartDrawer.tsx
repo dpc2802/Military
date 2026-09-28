@@ -118,7 +118,7 @@ function CartItem({ item, updateQuantity, removeItem }: any) {
 
 export default function CartDrawer({ open, onClose }: CartDrawerProps) {
   const router = useRouter();
-  const { items, removeItem, updateQuantity, totalPrice, clearCart } = useCartStore();
+  const { items, removeItem, updateQuantity, totalPrice, clearCart, coupon, applyCoupon, removeCoupon, discountAmount, finalTotal } = useCartStore();
   const [processing, setProcessing] = useState(false);
   const [couponInput, setCouponInput] = useState("");
   const [couponLoading, setCouponLoading] = useState(false);
