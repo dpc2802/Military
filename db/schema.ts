@@ -1,4 +1,4 @@
-﻿import { pgTable, text, json, integer, boolean, timestamp, serial, varchar, decimal, jsonb } from "drizzle-orm/pg-core";
+import { pgTable, text, json, integer, boolean, timestamp, serial, varchar, decimal, jsonb } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
 // ─── ADMIN USERS ────────────────────────────────────────────────────────────
@@ -92,6 +92,9 @@ export const orders = pgTable("orders", {
   paymentMethod: varchar("payment_method", { length: 32 }).notNull().default("whatsapp"),
   // id de la pasarela de pago (ej: payment_id de mercadopago)
   paymentId: varchar("payment_id", { length: 128 }),
+  // Cupón de descuento aplicado
+  couponCode: varchar("coupon_code", { length: 32 }),
+  discountAmount: decimal("discount_amount", { precision: 12, scale: 2 }).default("0").notNull(),
   // Total en COP
   totalAmount: decimal("total_amount", { precision: 12, scale: 2 }).notNull(),
     trackingNumber: varchar("tracking_number", { length: 128 }),
@@ -212,3 +215,28 @@ export const paymentEvents = pgTable("payment_events", {
   processedAt: timestamp("processed_at"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
+
+// ─── COUPONS (Cupones de descuento únicos) ────────────────────────────────────
+// Cada código se genera desde el panel admin, tiene un solo uso y muere al completarse el pedido.
+export const coupons = pgTable("coupons", {
+  id: serial("id").primaryKey(),
+  // Código único generado: SGB-10-XXXX, SGB-20-XXXX, SGB-30-XXXX
+  code: varchar("code", { length: 32 }).notNull().unique(),
+  // Porcentaje de descuento: 10, 20 o 30
+  discountPercentage: integer("discount_percentage").notNull(),
+  // isUsed = false: disponible | true: quemado
+  isUsed: boolean("is_used").default(false).notNull(),
+  // Referencia al pedido que lo quemó (opcional, para auditoría)
+  usedByOrderId: integer("used_by_order_id").references(() => orders.id),
+  // Fecha en que fue creado (para que el admin vea cuándo lo generó)
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  // Fecha en que fue quemado
+  usedAt: timestamp("used_at"),
+});
+
+export const couponsRelations = relations(coupons, ({ one }) => ({
+  usedByOrder: one(orders, {
+    fields: [coupons.usedByOrderId],
+    references: [orders.id],
+  }),
+}));

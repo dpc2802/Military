@@ -5,7 +5,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db";
-import { orders, orderItems, productVariants } from "@/db/schema";
+import { orders, orderItems, productVariants, coupons } from "@/db/schema";
 import { eq, inArray, sql } from "drizzle-orm";
 import NewOrderEmail from "@/lib/emails/NewOrderEmail";
 import { render } from "@react-email/render";
@@ -26,6 +26,7 @@ const checkoutSchema = z.object({
   customerNotes: z.string().optional(),
   acceptTerms: z.boolean(),
   paymentMethod: z.enum(["whatsapp", "wompi"]).default("whatsapp"),
+  couponCode: z.string().optional(),
   items: z.array(
     z.object({
       variantId: z.number(),
@@ -49,7 +50,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Datos inválidos" }, { status: 400 });
     }
 
-    const { items, paymentMethod, ...customerData } = result.data;
+    const { items, paymentMethod, couponCode, ...customerData } = result.data;
 
     // 1. Verificar stock actual de todas las variantes
     const variantIds = items.map((i) => i.variantId);
@@ -92,7 +93,29 @@ export async function POST(request: NextRequest) {
     });
 
     const shippingCost = subtotalAmount >= 300000 ? 0 : 25000;
-    const totalAmount = subtotalAmount + shippingCost;
+    const totalAmount = subtotalAmount + shippingCost - discountAmount;
+
+    // 2b. Quemar cupón atómicamente (Race-condition safe)
+    let discountAmount = 0;
+    let validatedCouponCode: string | undefined = undefined;
+
+    if (couponCode) {
+      const burned = await db.update(coupons)
+        .set({ isUsed: true, usedAt: new Date() })
+        .where(and(eq(coupons.code, couponCode.toUpperCase()), eq(coupons.isUsed, false)))
+        .returning();
+
+      if (burned.length === 0) {
+        return NextResponse.json(
+          { error: "El cupón no es válido o ya fue utilizado por alguien más. Por favor intenta sin cupón." },
+          { status: 400 }
+        );
+      }
+
+      const pct = burned[0].discountPercentage;
+      discountAmount = Math.round(subtotalAmount * (pct / 100));
+      validatedCouponCode = burned[0].code;
+    }
 
     // 3. Crear Pedido y Reservar Stock
     const [newOrder] = await db.insert(orders).values({
@@ -106,6 +129,8 @@ export async function POST(request: NextRequest) {
       customerAddress: customerData.customerAddress,
       customerNotes: customerData.customerNotes,
       paymentMethod,
+      couponCode: validatedCouponCode,
+      discountAmount: discountAmount.toString(),
       status: paymentMethod === "wompi" ? "pendiente_pago" : "pendiente_whatsapp",
       totalAmount: totalAmount.toString(),
       stockReservationExpiresAt: new Date(Date.now() + STOCK_RESERVATION_HOURS * 60 * 60 * 1000),
@@ -116,6 +141,13 @@ export async function POST(request: NextRequest) {
     const orderNum = generateOrderNumber(newOrder.id);
     await db.update(orders).set({ orderNumber: orderNum }).where(eq(orders.id, newOrder.id));
     newOrder.orderNumber = orderNum;
+
+    // Link burned coupon to order for audit trail
+    if (validatedCouponCode) {
+      await db.update(coupons)
+        .set({ usedByOrderId: newOrder.id })
+        .where(eq(coupons.code, validatedCouponCode));
+    }
 
     for (const item of finalItems) {
       await db.insert(orderItems).values({

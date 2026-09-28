@@ -13,6 +13,7 @@ import {
   X,
   ChevronRight,
   ShieldCheck,
+  Ticket,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -21,6 +22,7 @@ const navItems = [
   { href: "/admin/productos", label: "Productos", icon: Package, exact: false },
   { href: "/admin/categorias", label: "Categorías", icon: FolderOpen, exact: false },
   { href: "/admin/pedidos", label: "Pedidos", icon: ShoppingBag, exact: false },
+  { href: "/admin/cupones", label: "Cupones", icon: Ticket, exact: false },
 ];
 
 export default function AdminSidebar({ username }: { username: string }) {

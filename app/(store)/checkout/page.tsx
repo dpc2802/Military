@@ -34,9 +34,45 @@ export default function CheckoutPage() {
   const router = useRouter();
   const { items, totalPrice, clearCart } = useCartStore();
   const subtotal = totalPrice();
+  const [couponCode, setCouponCode] = useState("");
+  const [couponInput, setCouponInput] = useState("");
+  const [couponDiscount, setCouponDiscount] = useState(0);
+  const [couponError, setCouponError] = useState("");
+  const [couponLoading, setCouponLoading] = useState(false);
+
   const shippingCost = subtotal >= 300000 ? 0 : 25000;
-  const finalTotal = subtotal + shippingCost;
+  const discountAmount = Math.round(subtotal * (couponDiscount / 100));
+  const finalTotal = subtotal + shippingCost - discountAmount;
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const applyCoupon = async () => {
+    if (!couponInput.trim()) return;
+    setCouponLoading(true);
+    setCouponError("");
+    try {
+      const res = await fetch(`/api/coupons/validate?code=${couponInput.trim().toUpperCase()}`);
+      const data = await res.json();
+      if (!res.ok) {
+        setCouponError(data.error ?? "Cupón inválido");
+        setCouponCode("");
+        setCouponDiscount(0);
+      } else {
+        setCouponCode(data.code);
+        setCouponDiscount(data.discountPercentage);
+        setCouponError("");
+      }
+    } catch {
+      setCouponError("Error verificando el cupón. Intenta de nuevo.");
+    }
+    setCouponLoading(false);
+  };
+
+  const removeCoupon = () => {
+    setCouponCode("");
+    setCouponInput("");
+    setCouponDiscount(0);
+    setCouponError("");
+  };
 
   const {
     register,
