@@ -15,7 +15,7 @@ export default function Footer() {
       { href: "/productos?categoria=replicas-airsoft", label: "Réplicas / Airsoft" },
     ],
     "Información": [
-      { href: "https://wa.me/573226133232?text=Hola,%20quiero%20consultar%20el%20estado%20de%20mi%20pedido", label: "Consultar mi pedido" },
+      { href: "/consultar-pedido", label: "Consultar mi pedido" },
       
       { href: "/politica-envios", label: "Envíos y devoluciones" },
       { href: "/terminos-y-condiciones", label: "Términos y condiciones" },

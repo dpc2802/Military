@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ShoppingCart, Check, Heart, ShieldAlert, Zap } from "lucide-react";
 import { useCartStore } from "@/lib/stores/cart";
+import { useWishlistStore } from "@/lib/stores/wishlist";
 import { formatCOP, parsePrice } from "@/lib/format";
 import { toast } from "sonner";
 import type { ProductWithDetails } from "@/types";
@@ -16,8 +17,22 @@ interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
   const addItem = useCartStore((s) => s.addItem);
+  const wishlistToggle = useWishlistStore((s) => s.toggle);
+  const isWishlisted = useWishlistStore((s) => s.isWishlisted);
   const [isExpanded, setIsExpanded] = useState(false);
   const [addedState, setAddedState] = useState(false);
+  const wishlisted = isWishlisted(product.id);
+  const handleWishlist = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    wishlistToggle({
+      productId: product.id,
+      productName: product.name,
+      productSlug: product.slug,
+      imageUrl: (product.images as any[])?.[0]?.url ?? "/logo.png",
+      price: parsePrice(product.price),
+    });
+  };
 
   let images = product.images as ProductImage[] || [];
   
@@ -148,11 +163,12 @@ export default function ProductCard({ product }: ProductCardProps) {
           </div>
 
           {/* Botón de Favoritos (Esquina derecha) */}
-          <button 
-            onClick={(e) => { e.preventDefault(); e.stopPropagation(); }} 
+          <button
+            onClick={handleWishlist}
             className="absolute top-2 right-2 z-10 p-2 rounded-full bg-black/40 backdrop-blur-sm border border-white/10 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity hover:bg-accent/20"
+            title={wishlisted ? "Quitar de favoritos" : "Agregar a favoritos"}
           >
-            <Heart className="w-4 h-4 text-white hover:text-accent transition-colors" />
+            <Heart className={`w-4 h-4 transition-colors ${wishlisted ? "fill-accent text-accent" : "text-white hover:text-accent"}`} />
           </button>
         </div>
 

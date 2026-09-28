@@ -1,4 +1,5 @@
 ﻿import Link from "next/link";
+import StatsPanel from "@/components/admin/StatsPanel";
 import { sql, and, gte, eq, lte, desc } from "drizzle-orm";
 import { db } from "@/db";
 import { orders, products, productVariants } from "@/db/schema";
