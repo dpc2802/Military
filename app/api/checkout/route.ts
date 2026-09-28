@@ -92,12 +92,11 @@ export async function POST(request: NextRequest) {
       };
     });
 
-    const shippingCost = subtotalAmount >= 300000 ? 0 : 25000;
-    const totalAmount = subtotalAmount + shippingCost - discountAmount;
-
     // 2b. Quemar cupón atómicamente (Race-condition safe)
     let discountAmount = 0;
     let validatedCouponCode: string | undefined = undefined;
+
+    const shippingCost = subtotalAmount >= 300000 ? 0 : 25000;
 
     if (couponCode) {
       const burned = await db.update(coupons)
@@ -113,7 +112,7 @@ export async function POST(request: NextRequest) {
       }
 
       const pct = burned[0].discountPercentage;
-      discountAmount = Math.round(subtotalAmount * (pct / 100));
+      discountAmount = pct * 1000;
       validatedCouponCode = burned[0].code;
     }
 

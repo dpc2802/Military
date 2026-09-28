@@ -26,6 +26,16 @@ export default function ProductDetailClient({
   relatedProducts,
 }: ProductDetailClientProps) {
   const addItem = useCartStore((s) => s.addItem);
+  const wishlistToggle = useWishlistStore((s) => s.toggle);
+  const isWishlisted = useWishlistStore((s) => s.isWishlisted);
+  const wishlisted = isWishlisted(product.id);
+  const handleWishlist = () => wishlistToggle({
+    productId: product.id,
+    productName: product.name,
+    productSlug: product.slug,
+    imageUrl: (product.images as any[])?.[0]?.url ?? "/logo.png",
+    price: parsePrice(product.price),
+  });
 
   // -- FAKE IMAGES LOGIC PARA QUE NO SE ROMPA LA DEMO --
   let images = (product.images as ProductImage[]) || [];
