@@ -3,8 +3,9 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ShoppingCart, Menu, X, ChevronRight, Search } from "lucide-react";
+import { ShoppingCart, Menu, X, ChevronRight, Search, Heart } from "lucide-react";
 import { useCartStore } from "@/lib/stores/cart";
+import { useWishlistStore } from "@/lib/stores/wishlist";
 import { AnimatePresence, motion } from "framer-motion";
 import CartDrawer from "./CartDrawer";
 import SearchOverlay from "./SearchOverlay";
@@ -16,6 +17,7 @@ export default function Header() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const { totalItems } = useCartStore();
+  const wishlistItems = useWishlistStore((s) => s.items);
 
   useEffect(() => {
     setIsMounted(true);
@@ -82,6 +84,19 @@ export default function Header() {
 
           {/* Right Actions */}
           <div className="flex items-center gap-4 lg:gap-6 z-50">
+            <Link 
+              href="/favoritos"
+              className="relative p-2 text-muted-foreground hover:text-foreground transition-colors group"
+              aria-label="Lista de deseos"
+            >
+              <Heart className="w-5 h-5 transition-transform group-hover:scale-110" />
+              {isMounted && wishlistItems.length > 0 && (
+                <span className="absolute -top-1 -right-1 w-4 h-4 bg-accent text-background text-[10px] font-bold flex items-center justify-center rounded-full shadow-lg">
+                  {wishlistItems.length}
+                </span>
+              )}
+            </Link>
+  
             <button 
               onClick={() => setSearchOpen(true)}
               className="p-2 text-muted-foreground hover:text-foreground transition-colors group"
