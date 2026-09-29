@@ -63,6 +63,12 @@ export async function updateOrderStatus(orderId: number, newStatus: OrderStatus,
     }
   } else if (newStatus === "enviado") {
     updateData.shippedAt = now;
+    if (trackingData) {
+      updateData.shippingCompany = trackingData.company;
+      updateData.trackingNumber = trackingData.tracking;
+      order.shippingCompany = trackingData.company; // mutar el objeto para que lo reciba el email
+      order.trackingNumber = trackingData.tracking;
+    }
     
     if (order.customerEmail && process.env.SMTP_USER) {
       const html = await render(OrderShippedEmail({ order: order as any }));

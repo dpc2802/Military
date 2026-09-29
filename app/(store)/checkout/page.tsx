@@ -78,6 +78,7 @@ export default function CheckoutPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...data,
+          couponCode: coupon?.code,
           items: items.map(i => ({
             variantId: i.variantId,
             productId: i.productId,
@@ -304,6 +305,20 @@ export default function CheckoutPage() {
                   </div>
                 </div>
 
+              
+                <div className="pt-6">
+                  <label className="flex items-start gap-3 cursor-pointer">
+                    <input 
+                      type="checkbox"
+                      {...register("acceptTerms")}
+                      className="mt-1"
+                    />
+                    <div className="text-xs font-body text-muted-foreground">
+                      Acepto la <Link href="/politica-datos" className="text-accent hover:underline">Política de Tratamiento de Datos Personales</Link> y <Link href="/terminos-y-condiciones" className="text-accent hover:underline">Términos y Condiciones</Link>.
+                      {errors.acceptTerms && <p className="text-destructive mt-1">{errors.acceptTerms.message}</p>}
+                    </div>
+                  </label>
+                </div>
               </form>
             </div>
           </div>
