@@ -116,6 +116,8 @@ export async function POST(request: NextRequest) {
       validatedCouponCode = burned[0].code;
     }
 
+    const totalAmount = subtotalAmount + shippingCost - discountAmount;
+
     // 3. Crear Pedido y Reservar Stock
     const [newOrder] = await db.insert(orders).values({
       orderNumber: "TEMP",
