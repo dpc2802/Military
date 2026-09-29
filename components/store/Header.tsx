@@ -34,6 +34,7 @@ export default function Header() {
     { href: "/productos?categoria=botas-calzado", label: "Botas" },
     { href: "/productos?categoria=mochilas-equipaje", label: "Mochilas" },
     { href: "/productos?categoria=accesorios-tacticos", label: "Accesorios" },
+    { href: "/consultar-pedido", label: "Rastrear Pedido" },
   ];
 
   return (

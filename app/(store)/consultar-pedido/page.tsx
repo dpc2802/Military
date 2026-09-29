@@ -29,14 +29,18 @@ function getStepIndex(status: string) {
 }
 
 export default function ConsultarPedidoPage() {
-  const [query, setQuery] = useState("");
+  const [orderNumber, setOrderNumber] = useState("");
+  const [contactInfo, setContactInfo] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<OrderResult | null>(null);
   const [error, setError] = useState("");
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!query.trim()) return;
+    if (!orderNumber.trim() || !contactInfo.trim()) {
+      toast.error("Por favor ingresa ambos datos para buscar tu pedido.");
+      return;
+    }
     setLoading(true);
     setError("");
     setResult(null);
@@ -75,27 +79,38 @@ export default function ConsultarPedidoPage() {
       </div>
 
       {/* Search Form */}
-      <form onSubmit={handleSearch} className="flex gap-2 mb-8">
-        <input
-          type="text"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Ej: SGB-0042 o tu número de celular"
-          className="flex-1 bg-white/5 border border-white/10 px-4 py-3 text-sm font-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-accent/50 rounded-none"
-        />
-        <button
-          type="submit"
-          disabled={loading}
-          className="bg-accent text-black font-heading text-sm px-6 py-3 uppercase tracking-widest hover:bg-accent/80 transition-all disabled:opacity-50 flex items-center gap-2"
-        >
-          {loading ? (
-            <span className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" />
-          ) : (
-            <Search className="w-4 h-4" />
-          )}
-          Buscar
-        </button>
-      </form>
+      <form onSubmit={handleSearch} className="flex flex-col gap-4 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <input
+              type="text"
+              value={orderNumber}
+              onChange={(e) => setOrderNumber(e.target.value)}
+              placeholder="Ej. SGB-0023"
+              className="w-full bg-background border border-white/10 px-4 py-3 text-sm font-body text-white focus:outline-none focus:border-accent transition-colors"
+              required
+            />
+            <input
+              type="text"
+              value={contactInfo}
+              onChange={(e) => setContactInfo(e.target.value)}
+              placeholder="Celular o Correo electrónico"
+              className="w-full bg-background border border-white/10 px-4 py-3 text-sm font-body text-white focus:outline-none focus:border-accent transition-colors"
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full md:w-auto self-end flex items-center justify-center gap-2 bg-accent hover:bg-accent/80 text-black px-8 py-3 text-xs font-heading tracking-widest uppercase transition-all disabled:opacity-50"
+          >
+            {loading ? (
+              <Package className="w-4 h-4 animate-spin" />
+            ) : (
+              <Search className="w-4 h-4" />
+            )}
+            Rastrear Pedido
+          </button>
+        </form>
 
       {/* Error */}
       {error && (

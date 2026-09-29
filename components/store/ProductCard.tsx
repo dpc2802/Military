@@ -168,7 +168,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             className="absolute top-2 right-2 z-10 p-2 rounded-full bg-black/40 backdrop-blur-sm border border-white/10 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity hover:bg-accent/20"
             title={wishlisted ? "Quitar de favoritos" : "Agregar a favoritos"}
           >
-            <Heart className={`w-4 h-4 transition-colors ${wishlisted ? "fill-accent text-accent" : "text-white hover:text-accent"}`} />
+            <Heart fill={wishlisted ? "currentColor" : "none"} className={`w-4 h-4 transition-all duration-300 ${wishlisted ? "text-accent scale-110" : "text-white group-hover:text-accent scale-100"}`} />
           </button>
         </div>
 
