@@ -6,7 +6,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db";
 import { orders, orderItems, productVariants, coupons } from "@/db/schema";
-import { eq, inArray, sql } from "drizzle-orm";
+import { eq, inArray, sql, and } from "drizzle-orm";
 import NewOrderEmail from "@/lib/emails/NewOrderEmail";
 import { render } from "@react-email/render";
 import { mailer, SENDER_EMAIL } from "@/lib/mail";
@@ -120,7 +120,7 @@ export async function POST(request: NextRequest) {
 
     // 3. Crear Pedido y Reservar Stock
     const [newOrder] = await db.insert(orders).values({
-      orderNumber: "TEMP",
+      orderNumber: "TEMP-" + Date.now(),
       customerEmail: customerData.customerEmail,
       customerName: customerData.customerName,
       customerDni: customerData.customerDni,
@@ -212,6 +212,6 @@ export async function POST(request: NextRequest) {
 
   } catch (error) {
     console.error("[API CHECKOUT] Error:", error);
-    return NextResponse.json({ error: "Error procesando el pedido" }, { status: 500 });
+    return NextResponse.json({ error: "Error procesando el pedido: " + (error instanceof Error ? error.message : String(error)) }, { status: 500 });
   }
 }
