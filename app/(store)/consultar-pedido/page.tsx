@@ -62,7 +62,7 @@ export default function ConsultarPedidoPage() {
   const isCancelled = result?.status === "cancelado";
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-12 md:py-20">
+    <div className="max-w-2xl mx-auto px-4 pt-28 pb-12 md:pt-36 md:pb-20">
       {/* Header */}
       <div className="flex items-center gap-4 mb-10 border-b border-white/10 pb-6">
         <div className="w-12 h-12 bg-accent/10 border border-accent/20 rounded-xl flex items-center justify-center">

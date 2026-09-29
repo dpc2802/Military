@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 
 export default function PoliticaEnviosPage() {
   return (
-    <div className="max-w-4xl mx-auto px-4 py-12 md:py-20">
+    <div className="max-w-4xl mx-auto px-4 pt-28 pb-12 md:pt-36 md:pb-20">
       <div className="flex items-center gap-4 mb-8 border-b border-white/10 pb-6">
         <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center border border-accent/20">
           <Truck className="w-6 h-6 text-accent" />

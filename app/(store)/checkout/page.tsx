@@ -140,7 +140,7 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="bg-background min-h-screen">
+    <div className="bg-background min-h-screen pt-20 lg:pt-24">
       {/* Header simple */}
       <div className="bg-surface border-b border-border">
         <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">

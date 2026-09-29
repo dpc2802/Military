@@ -301,7 +301,7 @@ function WompiResultContent() {
 
 export default function WompiResultPage() {
   return (
-    <div className="min-h-screen bg-[#0A0A0A] flex flex-col items-center justify-center py-20 px-4 relative overflow-hidden">
+    <div className="min-h-screen bg-[#0A0A0A] flex flex-col items-center justify-center pt-32 pb-20 px-4 relative overflow-hidden">
       {/* Background camo overlay muy sutil */}
       <div
         className="absolute inset-0 opacity-[0.03] pointer-events-none"
