@@ -120,7 +120,7 @@ export async function POST(request: NextRequest) {
 
     // 3. Crear Pedido y Reservar Stock
     const [newOrder] = await db.insert(orders).values({
-      orderNumber: "TEMP-" + Date.now(),
+      orderNumber: "T-" + Date.now(),
       customerEmail: customerData.customerEmail,
       customerName: customerData.customerName,
       customerDni: customerData.customerDni,
