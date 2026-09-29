@@ -45,7 +45,7 @@ export default function ConsultarPedidoPage() {
     setError("");
     setResult(null);
     try {
-      const res = await fetch(`/api/orders/lookup?q=${encodeURIComponent(query.trim())}`);
+      const res = await fetch(`/api/orders/lookup?order=${encodeURIComponent(orderNumber.trim())}&contact=${encodeURIComponent(contactInfo.trim())}`);
       const data = await res.json();
       if (!res.ok) {
         setError(data.error || "No encontramos un pedido con esa información.");
