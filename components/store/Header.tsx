@@ -30,9 +30,8 @@ export default function Header() {
 
   const navLinks = [
     { href: "/productos", label: "Catálogo" },
-    { href: "/productos?categoria=uniformes-ropa-tactica", label: "Ropa" },
-    { href: "/productos?categoria=botas-calzado", label: "Botas" },
-    { href: "/productos?categoria=mochilas-equipaje", label: "Mochilas" },
+    { href: "/productos?categoria=gorras", label: "Gorras" },
+    { href: "/productos?categoria=pasamontanas", label: "Pasamontañas" },
     { href: "/productos?categoria=accesorios-tacticos", label: "Accesorios" },
     { href: "/consultar-pedido", label: "Rastrear Pedido" },
   ];
