@@ -10,6 +10,8 @@ function WompiResultContent() {
   const transactionId = searchParams.get("id");
   const [status, setStatus] = useState<"loading" | "approved" | "declined" | "error" | "pending">("loading");
   const [orderNumber, setOrderNumber] = useState("");
+  const [retryData, setRetryData] = useState<{ amountInCents: number, signature: string } | null>(null);
+  const [isRetrying, setIsRetrying] = useState(false);
 
   useEffect(() => {
     if (!transactionId) {
@@ -22,6 +24,9 @@ function WompiResultContent() {
       .then((data) => {
         if (data.success) {
           setOrderNumber(data.orderNumber);
+          if (data.amountInCents && data.signature) {
+            setRetryData({ amountInCents: data.amountInCents, signature: data.signature });
+          }
           if (data.status === "APPROVED") setStatus("approved");
           else if (data.status === "DECLINED" || data.status === "VOIDED" || data.status === "ERROR") setStatus("declined");
           else if (data.status === "PENDING") setStatus("pending");
@@ -32,6 +37,34 @@ function WompiResultContent() {
       })
       .catch(() => setStatus("error"));
   }, [transactionId]);
+
+
+  const handleRetryPayment = () => {
+    if (!retryData || !orderNumber) return;
+    setIsRetrying(true);
+    const script = document.createElement("script");
+    script.src = "https://checkout.wompi.co/widget.js";
+    script.onerror = () => {
+      setIsRetrying(false);
+      alert("No se pudo cargar la pasarela de pago. Intenta de nuevo.");
+    };
+    script.onload = () => {
+      const checkout = new (window as any).WidgetCheckout({
+        currency: "COP",
+        amountInCents: retryData.amountInCents,
+        reference: orderNumber,
+        publicKey: process.env.NEXT_PUBLIC_WOMPI_PUBLIC_KEY || "pub_test_7ACX50PPzAW8WBB3ZQwqZRO6wMZaxB6R",
+        signature: { integrity: retryData.signature }
+      });
+      checkout.open((wompiResult: any) => {
+        setIsRetrying(false);
+        if (wompiResult && wompiResult.transaction) {
+          window.location.href = `/checkout/wompi-result?id=${wompiResult.transaction.id}`;
+        }
+      });
+    };
+    document.body.appendChild(script);
+  };
 
   if (status === "loading") {
     return (
@@ -247,13 +280,14 @@ function WompiResultContent() {
       </div>
 
       <div className="flex flex-col sm:flex-row gap-3 w-full max-w-xs">
-        <Link
-          href="/checkout"
-          className="flex-1 flex items-center justify-center gap-2 bg-accent hover:bg-accent/80 text-black py-3 text-xs font-heading tracking-widest uppercase transition-all"
+        <button
+          onClick={handleRetryPayment}
+          disabled={isRetrying || !retryData}
+          className="flex-1 flex items-center justify-center gap-2 bg-accent hover:bg-accent/80 text-black py-3 text-xs font-heading tracking-widest uppercase transition-all disabled:opacity-50"
         >
-          <RefreshCw className="w-3.5 h-3.5" />
-          INTENTAR NUEVAMENTE
-        </Link>
+          <RefreshCw className={`w-3.5 h-3.5 ${isRetrying ? "animate-spin" : ""}`} />
+          {isRetrying ? "PROCESANDO..." : "INTENTAR NUEVAMENTE"}
+        </button>
         <Link
           href="/productos"
           className="flex-1 flex items-center justify-center border border-white/20 hover:border-white/40 text-white py-3 text-xs font-heading tracking-widest uppercase transition-all"
