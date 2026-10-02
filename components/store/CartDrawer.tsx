@@ -100,13 +100,14 @@ function CartItem({ item, updateQuantity, removeItem }: any) {
                 </button>
               </div>
             ) : (
-              <button
+              <motion.button
+                whileTap={{ scale: 0.9 }}
                 onClick={() => setConfirmDelete(true)}
                 className="text-[#9A9A94] hover:text-destructive transition-colors p-2 -m-2"
                 aria-label="Eliminar del carrito"
               >
                 <Trash2 className="w-4 h-4" />
-              </button>
+              </motion.button>
             )}
           </div>
         </div>
@@ -188,7 +189,7 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100]"
+            className="fixed inset-0 bg-[#0A0A0A]/80 backdrop-blur-md z-[100]"
           />
 
           {/* Drawer Lateral */}
