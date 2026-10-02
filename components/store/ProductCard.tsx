@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ShoppingCart, Check, Heart, ShieldAlert, Zap } from "lucide-react";
+import { motion } from "framer-motion";
 import { useCartStore } from "@/lib/stores/cart";
 import { useWishlistStore } from "@/lib/stores/wishlist";
 import { formatCOP, parsePrice } from "@/lib/format";
@@ -123,11 +124,11 @@ export default function ProductCard({ product }: ProductCardProps) {
   };
 
   return (
-    <div className="group relative bg-background border border-white/5 hover:border-accent/30 transition-colors flex flex-col h-full scroll-reveal-card @container" style={{ contentVisibility: "auto" }}>
+    <div className="group relative bg-[#0A0A0A] rounded-2xl border border-white/10 hover:border-white/20 hover:bg-white/[0.02] transition-all duration-500 flex flex-col h-full scroll-reveal-card overflow-hidden shadow-sm @container" style={{ contentVisibility: "auto" }}>
       <Link href={`/productos/${product.slug}`} className="flex flex-col flex-1 block">
         
         {/* IMAGEN (Fija 4/5) con Hover Effect Premium */}
-        <div className="relative aspect-[4/5] w-full overflow-hidden bg-[#111]">
+        <div className="relative aspect-[4/5] w-full overflow-hidden bg-[#111] ring-1 ring-inset ring-white/10">
           {/* Skeleton animado mientras carga */}
           <div className="absolute inset-0 bg-white/5 animate-pulse" />
 
@@ -163,13 +164,14 @@ export default function ProductCard({ product }: ProductCardProps) {
           </div>
 
           {/* Botón de Favoritos (Esquina derecha) */}
-          <button
+          <motion.button
+            whileTap={{ scale: 0.8 }}
             onClick={handleWishlist}
-            className="absolute top-2 right-2 z-10 p-2 rounded-full bg-black/40 backdrop-blur-sm border border-white/10 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity hover:bg-accent/20"
+            className="absolute top-2 right-2 z-10 p-2 rounded-full bg-black/40 backdrop-blur-sm border border-white/10 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity hover:bg-white/10"
             title={wishlisted ? "Quitar de favoritos" : "Agregar a favoritos"}
           >
             <Heart fill={wishlisted ? "currentColor" : "none"} className={`w-4 h-4 transition-all duration-300 ${wishlisted ? "text-accent scale-110" : "text-white group-hover:text-accent scale-100"}`} />
-          </button>
+          </motion.button>
         </div>
 
         {/* INFO Y CTA (Siempre debajo de la imagen) */}
@@ -181,13 +183,13 @@ export default function ProductCard({ product }: ProductCardProps) {
           </p>
 
           {/* Nombre de producto */}
-          <h3 className="text-[13px] md:text-[15px] font-heading text-foreground tracking-wide uppercase leading-snug line-clamp-2 mb-3">
+          <h3 className="text-sm md:text-base font-heading text-foreground tracking-widest uppercase leading-snug line-clamp-2 mb-3">
             {product.name}
           </h3>
 
           <div className="mt-auto">
             {/* Precio */}
-            <p className="text-accent font-heading text-lg md:text-xl tracking-wider mb-4 drop-shadow-sm">
+            <p className="text-accent font-mono text-sm md:text-base tracking-widest mb-4">
               {formatCOP(parsePrice(product.price))}
             </p>
 
@@ -199,7 +201,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                     <button
                       key={v.id}
                       onClick={(e) => handleActionClick(e, v)}
-                      className="text-[10px] md:text-xs font-body px-3 py-1.5 border border-white/20 text-[#9A9A94] hover:border-accent hover:text-foreground transition-colors uppercase"
+                      className="text-[10px] md:text-xs font-heading px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-[#9A9A94] hover:bg-white/10 hover:text-foreground transition-all uppercase tracking-widest"
                     >
                       {v.size || "Única"}
                     </button>
@@ -209,20 +211,21 @@ export default function ProductCard({ product }: ProductCardProps) {
             </div>
 
             {/* Botón principal CTA */}
-            <button
+            <motion.button
+              whileTap={!isOutOfStock ? { scale: 0.97 } : {}}
               onClick={(e) => handleActionClick(e)}
               disabled={isOutOfStock}
-              className={`w-full relative flex items-center justify-center gap-2 py-3 text-xs md:text-[13px] font-heading tracking-[0.15em] uppercase transition-all duration-300 shadow-[2px_2px_0px_rgba(0,0,0,0.5)] active:translate-y-0.5 active:translate-x-0.5 active:shadow-none ${
+              className={`w-full relative flex items-center justify-center gap-2 py-3 text-xs md:text-[13px] font-heading tracking-[0.15em] uppercase transition-colors duration-300 rounded-xl font-semibold ${
                 addedState 
                   ? "bg-[#25D366] text-black border-transparent" 
                   : isOutOfStock
                     ? "bg-muted text-muted-foreground border-transparent cursor-not-allowed"
                     : isExpanded 
                       ? "bg-transparent border border-white/20 text-foreground hover:bg-white/5"
-                      : "bg-accent text-accent-foreground border-transparent hover:bg-primary-light"
+                      : "bg-accent text-black border-transparent hover:bg-accent/90"
               }`}
             >
-              <div className="w-1.5 h-1.5 bg-black/30 absolute left-3 top-1/2 -translate-y-1/2" />
+              
               
               {addedState ? (
                 <>
@@ -241,7 +244,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                   AGREGAR AL CARRITO
                 </>
               )}
-            </button>
+            </motion.button>
           </div>
         </div>
       </Link>

@@ -41,8 +41,8 @@ export default function Header() {
       <header
         className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
           isScrolled
-            ? "bg-background/80 backdrop-blur-md border-b border-white/10 shadow-lg py-3"
-            : "bg-background/50 backdrop-blur-sm border-b border-transparent py-5"
+            ? "bg-[#0A0A0A]/60 backdrop-blur-2xl supports-[backdrop-filter]:bg-[#0A0A0A]/40 border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.1)] py-3"
+            : "bg-transparent border-b border-transparent py-5"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 lg:px-8 flex items-center justify-between">
@@ -84,8 +84,9 @@ export default function Header() {
 
           {/* Right Actions */}
           <div className="flex items-center gap-4 lg:gap-6 z-50">
-            <Link 
-              href="/favoritos"
+            <motion.div whileTap={{ scale: 0.9 }}>
+              <Link 
+                href="/favoritos"
               className="relative p-2 text-muted-foreground hover:text-foreground transition-colors group"
               aria-label="Lista de deseos"
             >
@@ -96,15 +97,18 @@ export default function Header() {
                 </span>
               )}
             </Link>
+            </motion.div>
   
-            <button 
+            <motion.button 
+              whileTap={{ scale: 0.9 }}
               onClick={() => setSearchOpen(true)}
               className="p-2 text-muted-foreground hover:text-foreground transition-colors group"
               aria-label="Buscar"
             >
               <Search className="w-5 h-5 transition-transform group-hover:scale-110" />
-            </button>
-            <button 
+            </motion.button>
+            <motion.button 
+              whileTap={{ scale: 0.9 }}
               onClick={() => setCartOpen(true)}
               className="relative p-2 text-muted-foreground hover:text-foreground transition-colors group"
               aria-label="Abrir carrito"
@@ -115,16 +119,17 @@ export default function Header() {
                   {totalItems()}
                 </span>
               )}
-            </button>
+            </motion.button>
 
             {/* Mobile Menu Toggle */}
-            <button
+            <motion.button
+              whileTap={{ scale: 0.9 }}
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="lg:hidden p-2 text-foreground focus:outline-none"
               aria-label="Menú"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
+            </motion.button>
           </div>
         </div>
       </header>
@@ -140,7 +145,8 @@ export default function Header() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="fixed inset-0 z-40 bg-background/95 backdrop-blur-xl lg:hidden pt-24 px-4 pb-6 flex flex-col"
+            className="fixed inset-0 z-40 bg-[#0A0A0A]/90 backdrop-blur-3xl lg:hidden pt-24 px-4 pb-6 flex flex-col"
+            transition={{ type: "spring", damping: 25, stiffness: 200 }}
           >
             <nav className="flex flex-col gap-2 mt-4">
               {navLinks.map((link, i) => (

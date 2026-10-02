@@ -1,4 +1,7 @@
 ﻿import fs from "fs";
-const p = "c:/Users/HP Core i5/Desktop/SGB MILITARY/app/(store)/checkout/page.tsx";
+const p = "c:/Users/HP Core i5/Desktop/SGB MILITARY/components/store/Header.tsx";
 let c = fs.readFileSync(p, "utf-8");
-console.log(c.substring(c.indexOf('className="bg-background min-h-screen"'), c.indexOf('className="bg-background min-h-screen"') + 250));
+let lines = c.split("\n");
+for(let i=80; i<110; i++) {
+  console.log(`${i+1}: ${lines[i]}`);
+}
