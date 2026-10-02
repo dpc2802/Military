@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 import ShareButton from "@/components/store/ShareButton";
 import { useWishlistStore } from "@/lib/stores/wishlist";
 
@@ -7,7 +7,7 @@ import Image from "next/image";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import Link from "next/link";
-import { ShoppingCart, Check, ShieldAlert, Star, ChevronRight, Info, Truck } from "lucide-react";
+import { ShoppingCart, Check, ShieldAlert, Star, ChevronRight, Info, Truck, Heart } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCartStore } from "@/lib/stores/cart";
 import { formatCOP, parsePrice } from "@/lib/format";
